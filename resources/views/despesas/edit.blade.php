@@ -1,0 +1,39 @@
+@extends('layouts.app')
+
+@section('title', 'Editar Despesa')
+
+@section('content')
+
+<div class="container mt-5">
+    <h1 class="mb-4">Editar Despesa</h1>
+    <hr>
+    <form action="{{ route('despesas.update', ['id' => $despesas->id]) }}" method="POST">
+        @csrf
+        @method('PUT')
+
+        <div class="form-group mb-3">
+            <label for="nome" class="form-label">Nome:</label>
+            <input type="text" class="form-control" name="nome" value="{{ $despesas->nome }}"
+                placeholder="Digite o nome da despesa:" required>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="descricao" class="form-label">Descrição:</label>
+            <input type="text" class="form-control" name="descricao" value="{{ $despesas->descricao }}"
+                placeholder="Digite a descrição:" required>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="valor" class="form-label">Valor:</label>
+            <input type="number" class="form-control" name="valor" value="{{ $despesas->valor }}"
+                placeholder="Digite o valor da despesa:" required>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            <a href="{{ route('despesas') }}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+@endsection

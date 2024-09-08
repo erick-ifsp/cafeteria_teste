@@ -1,0 +1,290 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Montserrat", sans-serif;
+    overflow-x: hidden;
+    height: 100vh;
+    background-size: cover;
+    background-color: #f1f1f1;
+  
+  }
+  
+  .icon {
+    font-size: 24px;
+    color: #000000;
+    transition: 0.15s ease;
+  }
+  
+  .icon:hover {
+    transform: scale(1.05);
+  }
+  
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f1f1f1;
+    padding: 25px;
+    color: #f1f1f1;
+    font-size: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.459);
+  
+  }
+  
+  header div {
+    display: flex;
+    align-items: center;
+  }
+  
+  .head {
+    color: #696969;
+    text-decoration: none;
+    margin-left: 25px;
+    transition: 0.15s ease;
+  }
+  
+  .head:last-child {
+    margin-right: 15px;
+  }
+  
+  .head:hover {
+    transform: scale(1.05);
+  }
+  
+  .principal {
+    display: inline-block;
+    position: relative;
+  }
+  
+  .principal img {
+  
+    object-fit: cover;
+    width: 2000px;
+  
+  }
+  
+  .mini-div {
+    height: 65px;
+    background-color: #2b0f03;
+    border: 2px solid #503526;
+    color: white;
+    text-align: center;
+    line-height: 50px;
+    width: 450px;
+    margin: 19px;
+    border-radius: 10px;
+  
+  }
+  
+  .mini-div:first-child {
+    margin: 19px;
+  }
+  
+  .menu {
+    display: flex;
+    width: 1000px;
+    height: 905px;
+    border-radius: 10px;
+    background-color: #2b0f03;
+    margin: auto;
+    margin-top: 60px;
+  }
+  
+  .mini-div2 {
+    height: 600px;
+    background-color: #2b0f03c0;
+    border: 2px solid #503526d2;
+    color: white;
+    text-align: center;
+    line-height: 50px;
+    width: 450px;
+    margin: 19px;
+    border-radius: 10px;
+    margin-left: 30px;
+  
+  }
+  
+  .mini-div2:first-child {
+    margin: 19px;
+    margin-top: 152.5px;
+  
+  
+  }
+  
+  .mini-div a {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  #imagem {
+    max-width: 100%;
+    max-height: 300px;
+  }
+  
+  .contato {
+  
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    margin: 10px;
+    background-color: #562b00;
+    width: 900px;
+  
+  
+  }
+  
+  
+  .contato h2 {
+    margin-bottom: 10px;
+    color: #f1f1f1;
+  }
+  
+  .contato form label {
+    display: block;
+    margin-bottom: 5px;
+    color: #f1f1f1;
+  }
+  
+  .contato form input[type="text"],
+  .contato form input[type="email"],
+  .contato form textarea {
+    width: 90%;
+    padding: 40px;
+    margin-bottom: 25px;
+    height: 20px;
+    border: 1px solid #f1f1f15e;
+    border-radius: 5px;
+    background-color: #f1f1f1;
+    resize: vertical;
+  
+  }
+  
+  .contato form textarea {
+  
+    width: 90%;
+  }
+  
+  .icon {
+    margin-right: 5px;
+    color: #f1f1f1;
+    vertical-align: middle;
+  
+  }
+  
+  .social-link {
+    display: inline-block;
+    text-decoration: none;
+  }
+  
+  .map-container {
+    position: relative;
+  
+  }
+  
+  .map-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 400px;
+    transition: filter 0.5 ease;
+    border: red solid 1px;
+  }
+  
+  .map-container:hover iframe {
+    filter: brightness(70%);
+  }
+  
+  
+  .contato form input[type="submit"] {
+    background-color: #2b0f038d;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: color 0.5 ease;
+  }
+  
+  .contato form input[type="submit"]:hover {
+    background-color: #2b0f03;
+  }
+  
+  
+  .redes-sociais {
+    background-color: #562b00;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    margin: 10px;
+    height: 550px;
+  }
+  
+  .redes-sociais h2 {
+    margin-bottom: 10px;
+    color: #f1f1f1;
+  
+  }
+  
+  .redes-sociais a,
+  p {
+    display: block;
+    margin-bottom: 10px;
+    text-decoration: none;
+    color: #f1f1f1
+  }
+  
+  
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 30px;
+  
+  }
+  
+  .menu-item {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px;
+    cursor: pointer;
+
+    
+  
+  }
+  
+  .menu-item:hover {
+    background-color: #f0f0f0;
+    
+  }
+  
+  .item-details {
+  
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 5px;
+    width: 800px;
+    margin: auto;
+    display: block;
+    text-align: left;
+    text-decoration: none;
+    color: #35473c;
+    font-weight: 700;
+    font-family: "Montserrat", sans-serif;
+  
+  
+  }
+  #cardapio-details {
+    margin-top: 40px;
+  }
+  p{
+    font-family:"Montserrat", sans-serif;
+    color: #000000;
+    
+  }
+  

@@ -1,0 +1,22 @@
+.navbar-custom {
+    background-color: #F1F1F1;
+}
+.navbar-nav .nav-link {
+    color: #35221B;
+    font-size: 1rem;
+}
+.navbar-nav .nav-link:hover {
+    transform: scale(1.05);
+}
+.navbar-brand {
+    transform: scale(1.35);
+    color: #35221B;
+}
+.navbar-brand:hover {
+    color: #35221B;
+    transform: scale(1.5);
+}
+
+.bg-marromescuro{
+    background-color: #35221B;
+}

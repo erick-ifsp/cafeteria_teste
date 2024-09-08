@@ -1,0 +1,140 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Montserrat", sans-serif;
+  overflow-x: hidden;
+  height: 100vh;
+  background-size: cover;
+  background-color: #f1f1f1;
+}
+
+.no-scroll {
+  overflow: hidden;
+}
+
+.carousel-inner {
+  display: inline-block;
+  position: relative;
+}
+
+.carousel-inner img {
+  margin: 0;
+  object-fit: cover;
+  width: 2000px;
+}
+
+#imagem {
+  max-width: 100%;
+  max-height: 300px;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.menu-item {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.menu-item:hover {
+  background-color: #f0f0f0;
+}
+
+.item-details {
+  display: none;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  margin-top: 5px;
+  width: 800px;
+  margin: auto;
+}
+
+#cardapio-details {
+  margin-top: 40px;
+}
+
+.link {
+  display: block;
+  text-align: right;
+  text-decoration: none;
+  color: #35473c;
+  font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+}
+
+.button {
+  font-family: "Montserrat", sans-serif;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  border-radius: 12px;
+  scale: 110%;
+  opacity: 0.8;
+  padding: 5px 10px;
+  background-color: #575757;
+  color: #f1f1f1;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.button:hover {
+  opacity: 1;
+  scale: 111%;
+}
+
+.button:active {
+  transform: translate(-50%, -50%) scale(0.98);
+  opacity: 0.9;
+}
+
+.sidebar {
+  position: fixed;
+  left: -250px;
+  width: 250px;
+  background-color: #f1f1f1;
+  padding-top: 10px;
+  height: calc(100% - 50px);
+  transition: left 0.3s ease;
+  z-index: 999;
+}
+
+.sidebar.active {
+  left: 0;
+  overflow: hidden;
+}
+
+.sidebar a {
+  color: #35221B;
+}
+
+.sidebar .nav-item {
+  width: 100%;
+}
+
+.sidebar .nav-item a {
+  width: 100%;
+  padding: 10px 15px;
+}
+
+.carousel-item {
+  transition: transform 0.3s ease-in-out !important;
+}
