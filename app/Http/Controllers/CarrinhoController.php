@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Carrinho;
-use App\Models\Financeiro;
-use DB;
+use App\Models\Cartao;
+use App\Models\Pedido;
+use App\Models\PedidoProduto;
 
 class CarrinhoController extends Controller
 {
@@ -16,13 +17,18 @@ class CarrinhoController extends Controller
 
     public function viewCarrinho()
     {
-        $carrinhoItems = Carrinho::where('user_id', auth()->id())->with('produto')->get();
+        $user = auth()->user();
+        $carrinhoItems = Carrinho::where('user_id', $user->id)->with('produto')->get();
+        $cartoes = Cartao::where('user_id', $user->id)->get();
 
         if ($carrinhoItems->isEmpty()) {
-            return view('carrinho.index')->with('message', 'Seu carrinho está vazio.');
+            return view('carrinho.index')->with([
+                'message' => 'Seu carrinho está vazio.',
+                'cartoes' => $cartoes
+            ]);
         }
 
-        return view('carrinho.index', compact('carrinhoItems'));
+        return view('carrinho.index', compact('carrinhoItems', 'cartoes'));
     }
 
     public function AdicionarCarrinho(Request $request, $produtoId)
@@ -95,23 +101,27 @@ class CarrinhoController extends Controller
         $user = auth()->user();
         $carrinhoItems = Carrinho::where('user_id', $user->id)->get();
 
-        foreach ($carrinhoItems as $item) {
-            // Calcula o valor total por item
-            $valor = $item->produto->preco * $item->quantidade;
+        $pedido = Pedido::create([
+            'user_id' => $user->id,
+            'total' => $carrinhoItems->sum(function ($item) {
+                return $item->produto->preco * $item->quantidade;
+            }),
+            'status' => 'Pendente',
+            'metodo_pagamento' => $request->input('metodo_pagamento'),
+            'cartao_id' => $request->input('cartao') ?? null, // Adicionando o ID do cartão se for pago com cartão
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
 
-            // Registra cada produto comprado separadamente no financeiro
-            Financeiro::create([
-                'user_id' => $user->id,
-                'nome' => $item->produto->nome,                      // Nome do produto
-                'descricao' => 'Comprador: ' . $user->name,           // Nome do comprador
-                'tipo' => 'Venda',
-                'valor' => $valor,                                    // Valor do produto (preço * quantidade)
-                'created_at' => now(),
-                'updated_at' => now(),
+        foreach ($carrinhoItems as $item) {
+            PedidoProduto::create([
+                'pedido_id' => $pedido->id,
+                'produto_id' => $item->produto_id,
+                'quantidade' => $item->quantidade,
+                'preco_unitario' => $item->produto->preco,
             ]);
         }
 
-        // Limpar o carrinho após a finalização
         Carrinho::where('user_id', $user->id)->delete();
 
         return redirect()->route('carrinho.index')->with('success', 'Compra realizada com sucesso!');

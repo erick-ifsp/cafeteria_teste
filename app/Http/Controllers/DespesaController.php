@@ -39,8 +39,8 @@ class DespesaController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $data['user_id'] = Auth::id(); // Adiciona o ID do usuário autenticado
-        $data['valor'] = -abs($data['valor']); // Garante que o valor seja negativo
+        $data['user_id'] = Auth::id();
+        $data['valor'] = -abs($data['valor']);
         $data['tipo'] = 'Despesa';
 
         Financeiro::create($data);

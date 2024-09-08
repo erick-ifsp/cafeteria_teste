@@ -70,6 +70,9 @@
                             {{ __('Carrinho') }}
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('pedidos') }}">{{ __('Pedidos') }}</a>
+                    </li>
 
                     @guest
                         @if (Route::has('login'))
@@ -88,9 +91,6 @@
                         @can ('access')
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('gerenciamento') }}">{{ __('Gerenciamento') }}</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('pedidos') }}">{{ __('Pedidos') }}</a>
                             </li>
                         @endcan
                         <li class="nav-item dropdown">

@@ -7,7 +7,7 @@ use App\Http\Controllers\ProdutoController;
 use App\Http\Controllers\DespesaController;
 use App\Http\Controllers\EstoqueController;
 use App\Http\Controllers\FuncionarioController;
-use App\Http\Controllers\VendaController;
+use App\Http\Controllers\CartaoController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\AccessController;
 use App\Http\Controllers\CarrinhoController;
@@ -61,6 +61,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile/cartao/{id}/edit', [ProfileController::class, 'editCartao'])->name('profile.cartao.edit');
     Route::put('/profile/cartao/{id}', [ProfileController::class, 'updateCartao'])->name('profile.cartao.update');
     Route::delete('/profile/cartao/{id}', [ProfileController::class, 'destroyCartao'])->name('profile.cartao.destroy');
+    Route::post('/cartoes', [CartaoController::class, 'store'])->name('cartoes.store');
+
 
     // PRODUTOS
     Route::prefix('produtos')->group(function () {
@@ -116,16 +118,11 @@ Route::middleware(['auth'])->group(function () {
 
     // PEDIDOS
     Route::prefix('pedidos')->group(function () {
-        Route::get('/', [PedidoController::class, 'index'])->name('pedidos.index')->middleware('can:access');
-        Route::get('/create', [PedidoController::class, 'create'])->name('pedidos.create')->middleware('can:access');
-        Route::post('/', [PedidoController::class, 'store'])->name('pedidos.store')->middleware('can:access');
-        Route::get('/{id}', [PedidoController::class, 'show'])->name('pedidos.show')->middleware('can:access');
-        Route::get('/{id}/edit', [PedidoController::class, 'edit'])->where('id', '[0-9]+')->name('pedidos.edit')->middleware('can:access');
-        Route::put('/{id}', [PedidoController::class, 'update'])->where('id', '[0-9]+')->name('pedidos.update')->middleware('can:access');
-        Route::delete('/{id}', [PedidoController::class, 'destroy'])->where('id', '[0-9]+')->name('pedidos.destroy')->middleware('can:access');
+        Route::get('/', [PedidoController::class, 'index'])->name('pedidos.index');
+        Route::get('/pedidos/{id}', [PedidoController::class, 'show'])->name('pedidos.show');
+        Route::put('/pedidos/{id}/status', [PedidoController::class, 'updateStatus'])->name('pedidos.updateStatus')->middleware('can:access');
     });
-
-    Route::get('/pedidos', [VendaController::class, 'index'])->name('pedidos')->middleware('can:access');
+    Route::get('/pedidos', [PedidoController::class, 'index'])->name('pedidos');
 
     //CATEGORIAS
 

@@ -3,9 +3,7 @@
 @section('content')
 
 <div class="sidebar" id="sidebar">
-    <nav class="nav flex-column ml-2">
-
-    
+    <nav class="nav flex-column ml-2">  
         <a class="nav-link" href="{{ route('carrinho.index') }}">Carrinho</a>
         <a class="nav-link" href="{{ route('sobre') }}">Sobre Nós</a>
 

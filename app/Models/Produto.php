@@ -29,4 +29,9 @@ class Produto extends Model
     {
         return $this->hasMany(Carrinho::class);
     }
+
+    public function pedidoProdutos()
+    {
+        return $this->hasMany(PedidoProduto::class, 'produto_id');
+    }
 }
