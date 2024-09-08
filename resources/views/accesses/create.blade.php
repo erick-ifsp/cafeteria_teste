@@ -13,7 +13,7 @@
                 @csrf
                 <div class="form-group mb-3">
                     <label for="nome" class="form-label">Nome:</label>
-                    <input type="text" class="form-control" name="nome" placeholder="Digite o nome da categoria de acesso"
+                    <input type="text" class="form-control" name="nome" maxlength="50" placeholder="Digite o nome da categoria de acesso"
                         required>
                 </div>
                 <div class="form-group">

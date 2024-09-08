@@ -21,6 +21,8 @@
     <!-- jQuery Mask Plugin -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 
+    <script src="{{ asset('js/mascaras.js') }}"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
         integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
@@ -153,5 +155,7 @@
         </footer>
     @endif
 </body>
+
+<script src="js/mascaras"></script>
 
 </html>

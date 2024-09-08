@@ -13,19 +13,19 @@
 
         <div class="form-group mb-3">
             <label for="nome" class="form-label">Nome:</label>
-            <input type="text" class="form-control" name="nome" value="{{ $estoques->nome }}"
+            <input type="text" class="form-control" maxlength="50" name="nome" value="{{ $estoques->nome }}"
                 placeholder="Digite o nome da estoque:" required>
         </div>
 
         <div class="form-group mb-3">
             <label for="descricao" class="form-label">Descrição e Quantidade:</label>
-            <input type="text" class="form-control" name="descricao" value="{{ $estoques->descricao }}"
+            <input type="text" class="form-control" maxlength="100" name="descricao" value="{{ $estoques->descricao }}"
                 placeholder="Digite a descrição e a quantidade:" required>
         </div>
 
         <div class="form-group mb-3">
             <label for="valor" class="form-label">Valor:</label>
-            <input type="number" class="form-control" name="valor" value="{{ $estoques->valor }}"
+            <input type="number" class="form-control" maxlength="20" name="valor" value="{{ $estoques->valor }}"
                 placeholder="Digite o valor da estoque:" required>
         </div>
 

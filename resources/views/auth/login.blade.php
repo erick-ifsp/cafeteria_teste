@@ -20,7 +20,7 @@
 
                             <div class="form-group">
                                 <label for="email">{{ __('Endereço de Email') }}</label>
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
+                                <input id="email" type="email" maxlength="100" class="form-control @error('email') is-invalid @enderror"
                                     name="email" value="{{ old('email') }}" required autocomplete="email"
                                     placeholder="Digite seu e-mail">
                                 @error('email')
@@ -33,7 +33,7 @@
                             <div class="form-group">
                                 <label for="password">{{ __('Senha') }}</label>
                                 <input id="password" type="password"
-                                    class="form-control @error('password') is-invalid @enderror" name="password"
+                                    class="form-control @error('password') is-invalid @enderror" maxlength="50" name="password"
                                     required autocomplete="current-password" placeholder="Digite sua senha">
                                 @error('password')
                                     <div class="invalid-feedback">

@@ -26,12 +26,12 @@
                     @csrf
                     <div class="form-group mb-3">
                         <label for="name" class="form-label">Nome</label>
-                        <input type="text" class="form-control" id="name" name="name" value="{{ $user->name }}"
+                        <input type="text" class="form-control" maxlength="50" id="name" name="name" value="{{ $user->name }}"
                             required>
                     </div>
                     <div class="form-group mb-3">
                         <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" value="{{ $user->email }}"
+                        <input type="email" class="form-control" maxlength="100" id="email" name="email" value="{{ $user->email }}"
                             required>
                     </div>
                     <button type="submit" class="btn btn-primary btn-block">Atualizar Perfil</button>
@@ -43,16 +43,16 @@
                     @csrf
                     <div class="form-group mb-3">
                         <label for="current_password" class="form-label">Senha Atual</label>
-                        <input type="password" class="form-control" id="current_password" name="current_password"
+                        <input type="password" maxlength="50" class="form-control" id="current_password" name="current_password"
                             required>
                     </div>
                     <div class="form-group mb-3">
                         <label for="password" class="form-label">Nova Senha</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
+                        <input type="password" maxlength="50" class="form-control" id="password" name="password" required>
                     </div>
                     <div class="form-group mb-3">
                         <label for="password_confirmation" class="form-label">Confirmar Nova Senha</label>
-                        <input type="password" class="form-control" id="password_confirmation"
+                        <input type="password" maxlength="50" class="form-control" id="password_confirmation"
                             name="password_confirmation" required>
                     </div>
                     <button type="submit" class="btn btn-primary btn-block">Atualizar Senha</button>
@@ -154,17 +154,17 @@
                     <input type="hidden" id="endereco_id" name="endereco_id">
                     <div class="form-group mb-3">
                         <label for="rua" class="form-label">Rua</label>
-                        <input type="text" class="form-control" id="rua" name="rua" placeholder="Digite o nome da rua"
+                        <input type="text" class="form-control" id="rua" maxlength="100" name="rua" placeholder="Digite o nome da rua"
                             required>
                     </div>
                     <div class="form-group mb-3">
                         <label for="cidade" class="form-label">Cidade</label>
-                        <input type="text" class="form-control" id="cidade" name="cidade"
+                        <input type="text" class="form-control" maxlength="50" id="cidade" name="cidade"
                             placeholder="Digite o nome da cidade" required>
                     </div>
                     <div class="form-group mb-3">
                         <label for="estado" class="form-label">Estado</label>
-                        <input type="text" class="form-control" id="estado" name="estado"
+                        <input type="text" class="form-control" maxlength="50" id="estado" name="estado"
                             placeholder="Digite o nome do estado" required>
                     </div>
                     <div class="form-group mb-3">
@@ -197,7 +197,7 @@
                     <div class="form-group mb-3">
                         <label for="nome" class="form-label">Nome no Cartão</label>
                         <input type="text" class="form-control" id="nome" name="nome"
-                            placeholder="Nome impresso no cartão" required>
+                            placeholder="Nome impresso no cartão" maxlength="50" required>
                     </div>
                     <div class="form-group mb-3">
                         <label for="data" class="form-label">Data de Expiração</label>
@@ -272,11 +272,6 @@
                 $('#cvv').trigger('input');
             });
         });
-
-        $('#cep').mask('00000-000');
-        $('#numero').mask('0000 0000 0000 0000');
-        $('#data').mask('00/00');
-        $('#cvv').mask('000');
     });
 </script>
 @endsection

@@ -11,15 +11,15 @@
         @csrf
         <div class="form-group mb-3">
             <label for="nome" class="form-label">Nome:</label>
-            <input type="text" class="form-control" name="nome" placeholder="Digite o nome da estoque:" required>
+            <input type="text" class="form-control" name="nome" maxlength="50" placeholder="Digite o nome da estoque:" required>
         </div>
         <div class="form-group mb-3">
             <label for="descricao" class="form-label">Quantidade e Descrição:</label>
-            <input type="text" class="form-control" name="descricao" placeholder="Digite a quantidade e a descrição:" required>
+            <input type="text" class="form-control" name="descricao" maxlength="100" placeholder="Digite a quantidade e a descrição:" required>
         </div>
         <div class="form-group mb-4">
             <label for="valor" class="form-label">Valor:</label>
-            <input type="number" class="form-control" name="valor" placeholder="Digite o valor da estoque:" required>
+            <input type="number" class="form-control" name="valor" maxlength="20" placeholder="Digite o valor da estoque:" required>
         </div>
         <div class="d-flex">
             <button type="submit" class="btn btn-primary me-2">Adicionar</button>

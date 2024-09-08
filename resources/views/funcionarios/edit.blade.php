@@ -13,12 +13,12 @@
 
         <div class="form-group mb-3">
             <label for="nome" class="form-label">Nome:</label>
-            <input type="text" class="form-control" name="nome" value="{{ $funcionario->nome }}" required>
+            <input type="text" class="form-control" maxlength="50" name="nome" value="{{ $funcionario->nome }}" required>
         </div>
 
         <div class="form-group mb-3">
             <label for="cpf" class="form-label">CPF:</label>
-            <input type="text" class="form-control" name="cpf" value="{{ $funcionario->cpf }}" required>
+            <input type="text" class="form-control" id="cpf" name="cpf" value="{{ $funcionario->cpf }}" required>
         </div>
 
         <div class="form-group mb-3">
@@ -28,12 +28,12 @@
 
         <div class="form-group mb-3">
             <label for="telefone" class="form-label">Telefone:</label>
-            <input type="text" class="form-control" name="telefone" value="{{ $funcionario->telefone }}" required>
+            <input type="text" class="form-control" id="telefone" name="telefone" value="{{ $funcionario->telefone }}" required>
         </div>
 
         <div class="form-group mb-3">
             <label for="email" class="form-label">Email:</label>
-            <input type="email" class="form-control" name="email" value="{{ $funcionario->email }}" required>
+            <input type="email" class="form-control" name="email" maxlength="100" value="{{ $funcionario->email }}" required>
         </div>
 
         <div class="form-group mb-3">
@@ -56,7 +56,7 @@
 
         <div class="form-group mb-3">
             <label for="salario" class="form-label">Salário:</label>
-            <input type="text" class="form-control" name="salario" value="{{ $funcionario->salario }}" required>
+            <input type="text" class="form-control" name="salario" maxlength="10" value="{{ $funcionario->salario }}" required>
         </div>
 
         <button type="submit" class="btn mt-3" style="background-color: #35221B; color: #f1f1f1">Atualizar</button>

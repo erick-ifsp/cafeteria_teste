@@ -13,7 +13,7 @@
                 @csrf
                 <div class="form-group mb-3">
                     <label for="nome" class="form-label">Nome:</label>
-                    <input type="text" class="form-control" name="nome" placeholder="Digite o nome do funcionário:"
+                    <input type="text" class="form-control" maxlength="50" name="nome" placeholder="Digite o nome do funcionário:"
                         required>
                 </div>
 
@@ -24,18 +24,18 @@
 
                 <div class="form-group mb-3">
                     <label for="cargo" class="form-label">Cargo:</label>
-                    <input type="text" class="form-control" name="cargo" placeholder="Digite o cargo do funcionário:"
+                    <input type="text" class="form-control" name="cargo" maxlength="50" placeholder="Digite o cargo do funcionário:"
                         required>
                 </div>
 
                 <div class="form-group mb-3">
                     <label for="telefone" class="form-label">Telefone:</label>
-                    <input type="text" class="form-control" name="telefone" placeholder="Digite o telefone:" required>
+                    <input type="text" class="form-control" id="telefone" name="telefone" placeholder="Digite o telefone:" required>
                 </div>
 
                 <div class="form-group mb-3">
                     <label for="email" class="form-label">Email:</label>
-                    <input type="email" class="form-control" name="email" placeholder="Digite o email:" required>
+                    <input type="email" class="form-control" name="email" maxlength="100" placeholder="Digite o email:" required>
                 </div>
 
                 <div class="form-group mb-3">
@@ -55,7 +55,7 @@
 
                 <div class="form-group mb-3">
                     <label for="salario" class="form-label">Salário:</label>
-                    <input type="number" step="0.01" class="form-control" name="salario"
+                    <input type="number" maxlength="10" step="0.01" class="form-control" name="salario"
                         placeholder="Digite o salário do funcionário:" required>
                 </div>
 
@@ -67,6 +67,5 @@
         </div>
     </div>
 </div>
-
 
 @endsection

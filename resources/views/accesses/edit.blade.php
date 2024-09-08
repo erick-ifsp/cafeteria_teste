@@ -14,7 +14,7 @@
         <div class="form-group">
             <div class="form-group">
                 <label for="nome">Nome:</label>
-                <input type="text" class="form-control" name="nome" value="{{ $accesses->nome }}"
+                <input type="text" class="form-control" name="nome" maxlength="50" value="{{ $accesses->nome }}"
                     placeholder="Digite o nome da categoria:" required>
             </div>
             <button type="submit" class="btn" style="background-color: #35221B; color: #f1f1f1">Salvar</button>

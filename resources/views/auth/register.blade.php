@@ -20,7 +20,7 @@
 
                             <div class="form-group">
                                 <label for="name">{{ __('Nome') }}</label>
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror"
+                                <input id="name" type="text" maxlength="100" class="form-control @error('name') is-invalid @enderror"
                                     name="name" value="{{ old('name') }}" required autocomplete="name" autofocus
                                     placeholder="Digite seu nome">
                                 @error('name')
@@ -32,7 +32,7 @@
 
                             <div class="form-group">
                                 <label for="email">{{ __('Endereço de Email') }}</label>
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
+                                <input id="email" type="email" maxlength="100" class="form-control @error('email') is-invalid @enderror"
                                     name="email" value="{{ old('email') }}" required autocomplete="email"
                                     placeholder="Digite seu e-mail">
                                 @error('email')
@@ -44,7 +44,7 @@
 
                             <div class="form-group">
                                 <label for="password">{{ __('Senha') }}</label>
-                                <input id="password" type="password"
+                                <input id="password" maxlength="50" type="password"
                                     class="form-control @error('password') is-invalid @enderror" name="password"
                                     required autocomplete="new-password" placeholder="Digite sua senha">
                                 @error('password')
@@ -56,7 +56,7 @@
 
                             <div class="form-group mb-3">
                                 <label for="password-confirm">{{ __('Confirme sua Senha') }}</label>
-                                <input id="password-confirm" type="password" class="form-control"
+                                <input id="password-confirm" maxlength="50" type="password" class="form-control"
                                     name="password_confirmation" required autocomplete="new-password"
                                     placeholder="Confirme sua senha">
                             </div>

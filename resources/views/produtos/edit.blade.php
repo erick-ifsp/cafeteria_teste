@@ -42,7 +42,7 @@
                     <div id="tipos-container">
                         @foreach(explode(',', $produtos->tipos) as $tipo)
                             <input type="text" class="form-control mb-2" name="tipos[]"
-                                value="{{ trim($tipo) }}" placeholder="Digite o tipo do produto">
+                                value="{{ trim($tipo) }}" maxlength="20" placeholder="Digite o tipo do produto">
                         @endforeach
                     </div>
                     <button type="button" class="btn btn-primary mt-2" onclick="addTipo()">Adicionar Tipo</button>
@@ -52,17 +52,10 @@
                     <label for="descricao" class="form-label">Descrição:</label>
                     <input type="text" class="form-control" name="descricao"
                         value="{{ old('descricao', $produtos->descricao) }}"
-                        placeholder="Adicione a descrição do produto" required oninput="updateCharacterCount()">
-                    <div class="form-text">
-                        Caracteres restantes: <span id="charCount" class="text" class="btn"
-                            style="color: #35221B">250</span>
-                    </div>
-                    <div id="errorMsg" class="text-danger mt-2" style="display:none;">A descrição não pode ter mais de
-                        250 caracteres.</div>
+                        placeholder="Adicione a descrição do produto" maxlength="250" required>
                 </div>
 
                 <div class="row">
-                    <!-- Imagem 1 -->
                     <div class="col-md-3 mb-3">
                         <label for="produto_arquivo" class="form-label">Adicionar foto principal:</label>
                         <input type="file" name="produto_arquivo" id="produto_arquivo" class="form-control"
@@ -74,7 +67,6 @@
                             style="display: {{ $produtos->produto_arquivo ? 'inline-block' : 'none' }};">Remover</button>
                     </div>
 
-                    <!-- Imagem 2 -->
                     <div class="col-md-3 mb-3" id="imagem2-group"
                         style="{{ $produtos->produto_arquivo2 ? '' : 'display:none;' }}">
                         <label for="produto_arquivo2" class="form-label">Adicionar foto</label>
@@ -87,7 +79,6 @@
                             style="display: {{ $produtos->produto_arquivo2 ? 'inline-block' : 'none' }};">Remover</button>
                     </div>
 
-                    <!-- Imagem 3 -->
                     <div class="col-md-3 mb-3" id="imagem3-group"
                         style="{{ $produtos->produto_arquivo3 ? '' : 'display:none;' }}">
                         <label for="produto_arquivo3" class="form-label">Adicionar foto</label>
@@ -100,7 +91,6 @@
                             style="display: {{ $produtos->produto_arquivo3 ? 'inline-block' : 'none' }};">Remover</button>
                     </div>
 
-                    <!-- Imagem 4 -->
                     <div class="col-md-3 mb-3" id="imagem4-group"
                         style="{{ $produtos->produto_arquivo4 ? '' : 'display:none;' }}">
                         <label for="produto_arquivo4" class="form-label">Adicionar foto</label>
@@ -114,7 +104,6 @@
                     </div>
                 </div>
 
-                <!-- Campos ocultos para rastrear remoção -->
                 <input type="hidden" name="produto_arquivo_removed" id="produto_arquivo_removed"
                     value="{{ $produtos->produto_arquivo }}">
                 <input type="hidden" name="produto_arquivo2_removed" id="produto_arquivo2_removed"
@@ -135,35 +124,6 @@
 </div>
 
 <script>
-    function updateCharacterCount() {
-        const maxLength = 250;
-        const descricaoElement = document.querySelector('input[name="descricao"]');
-        const charCount = descricaoElement.value.length;
-        const charRemaining = maxLength - charCount;
-        const charCountDisplay = document.getElementById('charCount');
-        const errorMsg = document.getElementById('errorMsg');
-
-        charCountDisplay.textContent = charRemaining;
-
-        if (charRemaining < 0) {
-            charCountDisplay.classList.add("text-danger");
-            charCountDisplay.classList.remove("text");
-            errorMsg.style.display = 'block';
-        } else {
-            charCountDisplay.classList.add("text");
-            charCountDisplay.classList.remove("text-danger");
-            errorMsg.style.display = 'none';
-        }
-    }
-
-    document.querySelector('form').addEventListener('submit', function (event) {
-        const descricaoElement = document.querySelector('input[name="descricao"]');
-        if (descricaoElement.value.length > 250) {
-            event.preventDefault();
-            alert('A descrição não pode ter mais de 250 caracteres.');
-        }
-    });
-
     function addTipo() {
         const container = document.getElementById('tipos-container');
         const input = document.createElement('input');
