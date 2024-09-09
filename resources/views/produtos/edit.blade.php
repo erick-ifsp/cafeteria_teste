@@ -42,7 +42,7 @@
                     <div id="tipos-container">
                         @foreach(explode(',', $produtos->tipos) as $tipo)
                             <input type="text" class="form-control mb-2" name="tipos[]"
-                                value="{{ trim($tipo) }}" maxlength="20" placeholder="Digite o tipo do produto">
+                                value="{{ trim($tipo) }}" maxlength="50" placeholder="Digite o tipo do produto">
                         @endforeach
                     </div>
                     <button type="button" class="btn btn-primary mt-2" onclick="addTipo()">Adicionar Tipo</button>

@@ -13,10 +13,10 @@
     <div class="row">
         <div class="col-md-3 vh-100">
             <div class="list-group">
-                <a href="#" class="list-group-item list-group-item-action active" id="dados-pessoais-tab">Dados
+                <a href="#" class="list-group-item list-group-item-action active" id="dados-pessoais-tab" style="background-color: #f1f1f1; color: #35221B">Dados
                     Pessoais</a>
-                <a href="#" class="list-group-item list-group-item-action" id="enderecos-tab">Endereços</a>
-                <a href="#" class="list-group-item list-group-item-action" id="cartoes-tab">Cartões</a>
+                <a href="#" class="list-group-item list-group-item-action" id="enderecos-tab" style="background-color: #f1f1f1; color: #35221B">Endereços</a>
+                <a href="#" class="list-group-item list-group-item-action" id="cartoes-tab" style="background-color: #f1f1f1; color: #35221B">Cartões</a>
             </div>
         </div>
 
@@ -34,7 +34,7 @@
                         <input type="email" class="form-control" maxlength="100" id="email" name="email" value="{{ $user->email }}"
                             required>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block">Atualizar Perfil</button>
+                    <button type="submit" class="btn btn-block" style="background-color: #35221B; color: #f1f1f1">Atualizar Perfil</button>
                 </form>
 
                 <hr class="my-4">
@@ -55,7 +55,7 @@
                         <input type="password" maxlength="50" class="form-control" id="password_confirmation"
                             name="password_confirmation" required>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block">Atualizar Senha</button>
+                    <button type="submit" class="btn btn-block" style="background-color: #35221B; color: #f1f1f1">Atualizar Senha</button>
                 </form>
             </div>
 
@@ -79,8 +79,8 @@
                                 <td>{{ $endereco->estado }}</td>
                                 <td>{{ $endereco->cep }}</td>
                                 <td>
-                                    <button type="button" class="btn btn-sm btn-warning"
-                                        data-edit-endereco='@json($endereco)'>
+                                    <button type="button" class="btn btn-warning"
+                                        data-edit-endereco='@json($endereco)' style="background-color: #35221B; color: #f1f1f1">
                                         Editar
                                     </button>
                                     <form action="{{ route('profile.endereco.destroy', $endereco->id) }}" method="POST"
@@ -95,7 +95,7 @@
                     </tbody>
                 </table>
 
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addEnderecoModal">
+                <button type="button" class="btn" style="background-color: #35221B; color: #f1f1f1" data-bs-toggle="modal" data-bs-target="#addEnderecoModal">
                     Adicionar Endereço
                 </button>
             </div>
@@ -118,14 +118,14 @@
                                 <td>{{ $cartao->nome }}</td>
                                 <td>{{ $cartao->data }}</td>
                                 <td>
-                                    <button type="button" class="btn btn-sm btn-warning" data-edit-cartao='@json($cartao)'>
+                                    <button type="button" class="btn btn-warning" data-edit-cartao='@json($cartao)' style="background-color: #35221B; color: #f1f1f1">
                                         Editar
                                     </button>
                                     <form action="{{ route('profile.cartao.destroy', $cartao->id) }}" method="POST"
                                         style="display:inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger">Remover</button>
+                                        <button type="submit" class="btn btn-danger" style="background-color: #35221B; color: #f1f1f1">Remover</button>
                                     </form>
                                 </td>
                             </tr>
@@ -133,7 +133,7 @@
                     </tbody>
                 </table>
 
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCartaoModal">
+                <button type="button" class="btn" style="background-color: #35221B; color: #f1f1f1" data-bs-toggle="modal" data-bs-target="#addCartaoModal">
                     Adicionar Cartão
                 </button>
             </div>
@@ -171,7 +171,7 @@
                         <label for="cep" class="form-label">CEP</label>
                         <input type="text" class="form-control" id="cep" name="cep" placeholder="00000-000" required>
                     </div>
-                    <button type="submit" class="btn btn-primary">Salvar Endereço</button>
+                    <button type="submit" class="btn" style="background-color: #35221B; color: #f1f1f1">Salvar Endereço</button>
                 </form>
             </div>
         </div>
@@ -207,7 +207,7 @@
                         <label for="cvv" class="form-label">CVV</label>
                         <input type="text" class="form-control" id="cvv" name="cvv" placeholder="123" required>
                     </div>
-                    <button type="submit" class="btn btn-primary">Salvar Cartão</button>
+                    <button type="submit" class="btn" style="background-color: #35221B; color: #f1f1f1">Salvar Cartão</button>
                 </form>
             </div>
         </div>

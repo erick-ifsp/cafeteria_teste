@@ -91,11 +91,11 @@
                         @endif
 
                     @else
-                        @can ('access')
+                        @can('func')
+
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('gerenciamento') }}">{{ __('Gerenciamento') }}</a>
                             </li>
-
                         @endcan
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"

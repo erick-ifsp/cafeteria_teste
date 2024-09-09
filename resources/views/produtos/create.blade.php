@@ -34,7 +34,7 @@
                 <div class="form-group mb-3">
                     <label for="tipos" class="form-label">Tipos:</label>
                     <div id="tipos-container">
-                        <input type="text" class="form-control mb-2" name="tipos[]" maxlength="20"
+                        <input type="text" class="form-control mb-2" name="tipos[]" maxlength="50"
                             placeholder="Digite o tipo do produto">
                     </div>
                     <button type="button" class="btn btn-primary mt-2" onclick="addTipo()">Adicionar Tipo</button>

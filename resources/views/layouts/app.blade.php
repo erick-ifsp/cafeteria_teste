@@ -90,7 +90,7 @@
                         @endif
 
                     @else
-                        @can ('access')
+                        @can('func')
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('gerenciamento') }}">{{ __('Gerenciamento') }}</a>
                             </li>

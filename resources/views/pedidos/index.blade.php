@@ -2,9 +2,9 @@
 
 @section('content')
 <div class="container mt-4">
-    @can('access')
+    @can('func')
         <div class="row">
-            <h2>Todos os Pedidos</h2>
+            <h2 class="mt-3">Todos os Pedidos</h2>
             @if($pedidos->isEmpty())
                 <p>Não há pedidos disponíveis.</p>
             @else
@@ -48,7 +48,7 @@
                                             @csrf
                                             @method('PUT')
                                             <input type="hidden" name="status" value="Concluído">
-                                            <button type="submit" class="btn btn-success btn-sm">Marcar como Concluído</button>
+                                            <button type="submit" class="btn" style="background-color: #98C9A3" btn-sm">Marcar como Concluído</button>
                                         </form>
                                     @endif
                                 </td>
@@ -56,8 +56,7 @@
                         @endforeach
                     </tbody>
                 </table>
-
-            @endif
+            @endcan
         </div>
     @else
         <div class="row">

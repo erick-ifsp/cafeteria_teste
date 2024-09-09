@@ -26,7 +26,7 @@ Route::get('/', function () {
 
 Route::get('/gerenciamento', function () {
     return view('gerenciamento');
-})->name('gerenciamento');
+})->name('gerenciamento')->middleware('can:func');
 
 Route::get('/sobre', function () {
     return view('sobre');
@@ -34,7 +34,7 @@ Route::get('/sobre', function () {
 
 Route::get('/cardapio', [ProdutoController::class, 'cardapio'])->name('cardapio');
 
-Route::get('/produtos', [ProdutoController::class, 'categoria_produtos'])->name('produtos')->middleware('can:access');
+Route::get('/produtos', [ProdutoController::class, 'categoria_produtos'])->name('produtos')->middleware('can:func');
 
 Route::get('/perfil', function () {
     return view('perfil');
@@ -67,91 +67,91 @@ Route::middleware(['auth'])->group(function () {
 
     // PRODUTOS
     Route::prefix('produtos')->group(function () {
-        Route::get('/', [ProdutoController::class, 'index'])->name('produtos.index')->middleware('can:access');
-        Route::get('/create', [ProdutoController::class, 'create'])->name('produtos.create')->middleware('can:access');
-        Route::post('/', [ProdutoController::class, 'store'])->name('produtos.store')->middleware('can:access');
+        Route::get('/', [ProdutoController::class, 'index'])->name('produtos.index')->middleware('can:func');
+        Route::get('/create', [ProdutoController::class, 'create'])->name('produtos.create')->middleware('can:func');
+        Route::post('/', [ProdutoController::class, 'store'])->name('produtos.store')->middleware('can:func');
         Route::get('/{id}', [ProdutoController::class, 'show'])->name('produtos.show');
-        Route::get('/{id}/edit', [ProdutoController::class, 'edit'])->where('id', '[0-9]+')->name('produtos.edit')->middleware('can:access');
-        Route::put('/{id}', [ProdutoController::class, 'update'])->where('id', '[0-9]+')->name('produtos.update')->middleware('can:access');
-        Route::delete('/{id}', [ProdutoController::class, 'destroy'])->where('id', '[0-9]+')->name('produtos.destroy')->middleware('can:access');
+        Route::get('/{id}/edit', [ProdutoController::class, 'edit'])->where('id', '[0-9]+')->name('produtos.edit')->middleware('can:func');
+        Route::put('/{id}', [ProdutoController::class, 'update'])->where('id', '[0-9]+')->name('produtos.update')->middleware('can:func');
+        Route::delete('/{id}', [ProdutoController::class, 'destroy'])->where('id', '[0-9]+')->name('produtos.destroy')->middleware('can:func');
     });
 
-    Route::get('/produtos', [ProdutoController::class, 'index'])->name('produtos')->middleware('can:access');
+    Route::get('/produtos', [ProdutoController::class, 'index'])->name('produtos')->middleware('can:func');
 
     // DESPESAS
     Route::prefix('despesas')->group(function () {
-        Route::get('/', [DespesaController::class, 'index'])->name('despesas.index')->middleware('can:access');
-        Route::get('/create', [DespesaController::class, 'create'])->name('despesas.create')->middleware('can:access');
-        Route::post('/', [DespesaController::class, 'store'])->name('despesas.store')->middleware('can:access');
-        Route::get('/{id}', [DespesaController::class, 'show'])->name('despesas.show')->middleware('can:access');
-        Route::get('/{id}/edit', [DespesaController::class, 'edit'])->where('id', '[0-9]+')->name('despesas.edit')->middleware('can:access');
-        Route::put('/{id}', [DespesaController::class, 'update'])->where('id', '[0-9]+')->name('despesas.update')->middleware('can:access');
-        Route::delete('/{id}', [DespesaController::class, 'destroy'])->where('id', '[0-9]+')->name('despesas.destroy')->middleware('can:access');
+        Route::get('/', [DespesaController::class, 'index'])->name('despesas.index')->middleware('can:func');
+        Route::get('/create', [DespesaController::class, 'create'])->name('despesas.create')->middleware('can:func');
+        Route::post('/', [DespesaController::class, 'store'])->name('despesas.store')->middleware('can:func');
+        Route::get('/{id}', [DespesaController::class, 'show'])->name('despesas.show')->middleware('can:func');
+        Route::get('/{id}/edit', [DespesaController::class, 'edit'])->where('id', '[0-9]+')->name('despesas.edit')->middleware('can:func');
+        Route::put('/{id}', [DespesaController::class, 'update'])->where('id', '[0-9]+')->name('despesas.update')->middleware('can:func');
+        Route::delete('/{id}', [DespesaController::class, 'destroy'])->where('id', '[0-9]+')->name('despesas.destroy')->middleware('can:func');
     });
 
-    Route::get('/despesas', [DespesaController::class, 'index'])->name('despesas')->middleware('can:access');
+    Route::get('/despesas', [DespesaController::class, 'index'])->name('despesas')->middleware('can:func');
 
     // ESTOQUE
     Route::prefix('estoques')->group(function () {
-        Route::get('/', [EstoqueController::class, 'index'])->name('estoques.index')->middleware('can:access');
-        Route::get('/create', [EstoqueController::class, 'create'])->name('estoques.create')->middleware('can:access');
-        Route::post('/', [EstoqueController::class, 'store'])->name('estoques.store')->middleware('can:access');
-        Route::get('/{id}', [EstoqueController::class, 'show'])->name('estoques.show')->middleware('can:access');
-        Route::get('/{id}/edit', [EstoqueController::class, 'edit'])->where('id', '[0-9]+')->name('estoques.edit')->middleware('can:access');
-        Route::put('/{id}', [EstoqueController::class, 'update'])->where('id', '[0-9]+')->name('estoques.update')->middleware('can:access');
-        Route::delete('/{id}', [EstoqueController::class, 'destroy'])->where('id', '[0-9]+')->name('estoques.destroy')->middleware('can:access');
+        Route::get('/', [EstoqueController::class, 'index'])->name('estoques.index')->middleware('can:func');
+        Route::get('/create', [EstoqueController::class, 'create'])->name('estoques.create')->middleware('can:func');
+        Route::post('/', [EstoqueController::class, 'store'])->name('estoques.store')->middleware('can:func');
+        Route::get('/{id}', [EstoqueController::class, 'show'])->name('estoques.show')->middleware('can:func');
+        Route::get('/{id}/edit', [EstoqueController::class, 'edit'])->where('id', '[0-9]+')->name('estoques.edit')->middleware('can:func');
+        Route::put('/{id}', [EstoqueController::class, 'update'])->where('id', '[0-9]+')->name('estoques.update')->middleware('can:func');
+        Route::delete('/{id}', [EstoqueController::class, 'destroy'])->where('id', '[0-9]+')->name('estoques.destroy')->middleware('can:func');
     });
 
-    Route::get('/estoques', [EstoqueController::class, 'index'])->name('estoques')->middleware('can:access');
+    Route::get('/estoques', [EstoqueController::class, 'index'])->name('estoques')->middleware('can:func');
 
     // FUNCIONARIOS
     Route::prefix('funcionarios')->group(function () {
-        Route::get('/', [FuncionarioController::class, 'index'])->name('funcionarios.index')->middleware('can:access');
-        Route::get('/create', [FuncionarioController::class, 'create'])->name('funcionarios.create')->middleware('can:access');
-        Route::post('/', [FuncionarioController::class, 'store'])->name('funcionarios.store')->middleware('can:access');
-        Route::get('/{id}', [FuncionarioController::class, 'show'])->name('funcionarios.show')->middleware('can:access');
-        Route::get('/{id}/edit', [FuncionarioController::class, 'edit'])->where('id', '[0-9]+')->name('funcionarios.edit')->middleware('can:access');
-        Route::put('/{id}', [FuncionarioController::class, 'update'])->where('id', '[0-9]+')->name('funcionarios.update')->middleware('can:access');
-        Route::delete('/{id}', [FuncionarioController::class, 'destroy'])->where('id', '[0-9]+')->name('funcionarios.destroy')->middleware('can:access');
+        Route::get('/', [FuncionarioController::class, 'index'])->name('funcionarios.index')->middleware('can:admin');
+        Route::get('/create', [FuncionarioController::class, 'create'])->name('funcionarios.create')->middleware('can:admin');
+        Route::post('/', [FuncionarioController::class, 'store'])->name('funcionarios.store')->middleware('can:admin');
+        Route::get('/{id}', [FuncionarioController::class, 'show'])->name('funcionarios.show')->middleware('can:admin');
+        Route::get('/{id}/edit', [FuncionarioController::class, 'edit'])->where('id', '[0-9]+')->name('funcionarios.edit')->middleware('can:admin');
+        Route::put('/{id}', [FuncionarioController::class, 'update'])->where('id', '[0-9]+')->name('funcionarios.update')->middleware('can:admin');
+        Route::delete('/{id}', [FuncionarioController::class, 'destroy'])->where('id', '[0-9]+')->name('funcionarios.destroy')->middleware('can:admin');
     });
 
-    Route::get('/funcionarios', [FuncionarioController::class, 'index'])->name('funcionarios')->middleware('can:access');
+    Route::get('/funcionarios', [FuncionarioController::class, 'index'])->name('funcionarios')->middleware('can:admin');
 
     // PEDIDOS
     Route::prefix('pedidos')->group(function () {
         Route::get('/', [PedidoController::class, 'index'])->name('pedidos.index');
         Route::get('/pedidos/{id}', [PedidoController::class, 'show'])->name('pedidos.show');
-        Route::put('/pedidos/{id}/status', [PedidoController::class, 'updateStatus'])->name('pedidos.updateStatus')->middleware('can:access');
+        Route::put('/pedidos/{id}/status', [PedidoController::class, 'updateStatus'])->name('pedidos.updateStatus')->middleware('can:func');
     });
     Route::get('/pedidos', [PedidoController::class, 'index'])->name('pedidos');
 
     //CATEGORIAS
 
     Route::prefix('categorias')->group(function () {
-        Route::get('/', [CategoriaController::class, 'index'])->name('categorias.index')->middleware('can:access');
-        Route::get('/create', [CategoriaController::class, 'create'])->name('categorias.create')->middleware('can:access');
-        Route::post('/', [CategoriaController::class, 'store'])->name('categorias.store')->middleware('can:access');
-        Route::get('/{id}', [CategoriaController::class, 'show'])->name('categorias.show')->middleware('can:access');
-        Route::get('/{id}/edit', [CategoriaController::class, 'edit'])->where('id', '[0-9]+')->name('categorias.edit')->middleware('can:access');
-        Route::put('/{id}', [CategoriaController::class, 'update'])->where('id', '[0-9]+')->name('categorias.update')->middleware('can:access');
-        Route::delete('/{id}', [CategoriaController::class, 'destroy'])->where('id', '[0-9]+')->name('categorias.destroy')->middleware('can:access');
+        Route::get('/', [CategoriaController::class, 'index'])->name('categorias.index')->middleware('can:func');
+        Route::get('/create', [CategoriaController::class, 'create'])->name('categorias.create')->middleware('can:func');
+        Route::post('/', [CategoriaController::class, 'store'])->name('categorias.store')->middleware('can:func');
+        Route::get('/{id}', [CategoriaController::class, 'show'])->name('categorias.show')->middleware('can:func');
+        Route::get('/{id}/edit', [CategoriaController::class, 'edit'])->where('id', '[0-9]+')->name('categorias.edit')->middleware('can:func');
+        Route::put('/{id}', [CategoriaController::class, 'update'])->where('id', '[0-9]+')->name('categorias.update')->middleware('can:func');
+        Route::delete('/{id}', [CategoriaController::class, 'destroy'])->where('id', '[0-9]+')->name('categorias.destroy')->middleware('can:func');
     });
 
-    Route::get('/categorias', [CategoriaController::class, 'index'])->name('categorias')->middleware('can:access');
+    Route::get('/categorias', [CategoriaController::class, 'index'])->name('categorias')->middleware('can:func');
 
     //ACCESS
 
     Route::prefix('accesses')->group(function () {
-        Route::get('/', [AccessController::class, 'index'])->name('accesses.index')->middleware('can:access');
-        Route::get('/create', [AccessController::class, 'create'])->name('accesses.create')->middleware('can:access');
-        Route::post('/', [AccessController::class, 'store'])->name('accesses.store')->middleware('can:access');
-        Route::get('/{id}', [AccessController::class, 'show'])->name('accesses.show')->middleware('can:access');
-        Route::get('/{id}/edit', [AccessController::class, 'edit'])->where('id', '[0-9]+')->name('accesses.edit')->middleware('can:access');
-        Route::put('/{id}', [AccessController::class, 'update'])->where('id', '[0-9]+')->name('accesses.update')->middleware('can:access');
-        Route::delete('/{id}', [AccessController::class, 'destroy'])->where('id', '[0-9]+')->name('accesses.destroy')->middleware('can:access');
+        Route::get('/', [AccessController::class, 'index'])->name('accesses.index')->middleware('can:func');
+        Route::get('/create', [AccessController::class, 'create'])->name('accesses.create')->middleware('can:func');
+        Route::post('/', [AccessController::class, 'store'])->name('accesses.store')->middleware('can:func');
+        Route::get('/{id}', [AccessController::class, 'show'])->name('accesses.show')->middleware('can:func');
+        Route::get('/{id}/edit', [AccessController::class, 'edit'])->where('id', '[0-9]+')->name('accesses.edit')->middleware('can:func');
+        Route::put('/{id}', [AccessController::class, 'update'])->where('id', '[0-9]+')->name('accesses.update')->middleware('can:func');
+        Route::delete('/{id}', [AccessController::class, 'destroy'])->where('id', '[0-9]+')->name('accesses.destroy')->middleware('can:func');
     });
 
-    Route::get('/accesses', [AccessController::class, 'index'])->name('accesses')->middleware('can:access');
+    Route::get('/accesses', [AccessController::class, 'index'])->name('accesses')->middleware('can:func');
 
     //CARRINHO
 
@@ -161,7 +161,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/carrinho/{carrinhoItemId}', [CarrinhoController::class, 'RemoverCarrinho'])->name('carrinho.remover');
 
     //FINANCEIRO
-    Route::get('/financeiro', [FinanceiroController::class, 'index'])->name('financeiro');
+    Route::get('/financeiro', [FinanceiroController::class, 'index'])->name('financeiro')->middleware('can:admin');
 });
 
 require __DIR__ . '/auth.php';

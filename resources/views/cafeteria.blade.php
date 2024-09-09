@@ -7,7 +7,7 @@
         <a class="nav-link" href="{{ route('carrinho.index') }}">Carrinho</a>
         <a class="nav-link" href="{{ route('sobre') }}">Sobre Nós</a>
 
-        @can('access')
+        @can('func')
             <a class="nav-link" href="{{ route('gerenciamento') }}">Gerenciamento</a>
         @endcan
 

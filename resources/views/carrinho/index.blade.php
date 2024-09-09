@@ -43,8 +43,10 @@
                                     R$ {{ number_format($item->produto->preco * $item->quantidade, 2, ',', '.') }}
                                 </td>
                                 <td class="align-middle">
-                                    <button class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
-                                        data-bs-target="#removerModal-{{ $item->id }}">Remover</button>
+                                    <button class="btn btn-sm" style="background-color: #8D120F; color: #f1f1f1"
+                                        data-bs-toggle="modal" data-bs-target="#removerModal-{{ $item->id }}">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
                                 </td>
                             </tr>
 
@@ -66,7 +68,8 @@
                                             <form action="{{ route('carrinho.remover', $item->id) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button class="btn btn-danger" type="submit">Remover</button>
+                                                <button class="btn" style="background-color: #8D120F; color: #f1f1f1"
+                                                    type="submit">Remover</button>
                                             </form>
                                         </div>
                                     </div>
@@ -84,7 +87,8 @@
                         {{ number_format($carrinhoItems->sum(function ($item) {
             return $item->produto->preco * $item->quantidade; }), 2, ',', '.') }}</span>
                 </h4>
-                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#finalizarCompraModal">Finalizar
+                <button class="btn" style="background-color: #98C9A3" data-bs-toggle="modal"
+                    data-bs-target="#finalizarCompraModal">Finalizar
                     Compra</button>
             </div>
         </div>
@@ -117,7 +121,7 @@
                                             <option value="{{ $cartao->id }}">{{ $cartao->nome }} - {{ $cartao->numero }}
                                             </option>
                                         @empty
-                                            <option value="" disabled>Nenhum cartão cadastrado</option>
+                                            <option value="">Nenhum cartão cadastrado</option>
                                         @endforelse
                                         <option value="novo">Adicionar Novo Cartão</option>
                                     </select>
@@ -125,7 +129,8 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                <button type="submit" class="btn btn-success">Confirmar Pagamento</button>
+                                <button type="submit" class="btn" style="background-color: #98C9A3">Confirmar
+                                    Pagamento</button>
                             </div>
                         </form>
                     </div>
@@ -133,13 +138,12 @@
             </div>
         </div>
 
-        <div class="modal fade" id="adicionarCartaoModal" tabindex="-1" aria-labelledby="adicionarCartaoLabel"
+        <div class=" modal fade" id="adicionarCartaoModal" tabindex="-1" aria-labelledby="adicionarCartaoLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Adicionar Novo Cartão</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <form id="adicionarCartaoForm" action="{{ route('cartoes.store') }}" method="POST">
@@ -154,16 +158,15 @@
                             </div>
                             <div class="mb-3">
                                 <label for="data" class="form-label">Data de Validade</label>
-                                <input type="text" id="data" name="data" class="form-control" placeholder="MM/AAAA"
-                                    required>
+                                <input type="text" id="data" name="data" class="form-control" placeholder="MM/AA" required>
                             </div>
                             <div class="mb-3">
                                 <label for="cvv" class="form-label">CVV</label>
-                                <input type="text" id="cvv" name="cvv" class="form-control" required>
+                                <input type="text" id="cvv" name="cvv" class="form-control" placeholder="000" required>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                <button type="submit" class="btn btn-primary">Adicionar Cartão</button>
+                                <button type="submit" class="btn" style="background-color: #98C9A3">Adicionar
+                                    Cartão</button>
                             </div>
                         </form>
                     </div>
@@ -177,38 +180,18 @@
 </div>
 
 <script>
-    document.querySelectorAll('.quantidade').forEach(function (input) {
-        input.addEventListener('change', function () {
-            var itemId = this.getAttribute('data-id');
-            var quantidade = this.value;
-
-            fetch('/carrinho/' + itemId, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({
-                    quantidade: quantidade
-                })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        const subtotalElement = this.closest('tr').querySelector('.subtotal');
-                        subtotalElement.innerText = 'R$ ' + data.subtotal;
-                        document.getElementById('total-carrinho').innerText = 'R$ ' + data.total;
-                    } else {
-                        console.error('Erro na resposta JSON', data);
-                    }
-                })
-                .catch(error => {
-                    console.error('Erro ao atualizar o carrinho:', error);
-                });
-        });
-    });
-
     document.addEventListener('DOMContentLoaded', function () {
+        // Fecha o primeiro modal quando o segundo modal abrir
+        $('#adicionarCartaoModal').on('show.bs.modal', function () {
+            $('#finalizarCompraModal').modal('hide');
+        });
+
+        // Reabre o primeiro modal quando o segundo modal fechar
+        $('#adicionarCartaoModal').on('hidden.bs.modal', function () {
+            $('#finalizarCompraModal').modal('show');
+        });
+
+        // Código existente para trocar de método de pagamento
         const metodoPagamentoSelect = document.getElementById('metodo_pagamento');
         const cartaoSection = document.getElementById('cartao-section');
         const cartaoSelect = document.getElementById('cartao');
@@ -228,4 +211,5 @@
         });
     });
 </script>
+
 @endsection
