@@ -5,15 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PedidoProduto extends Model
+class Notas_fiscais extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'pedido_id',
-        'produto_id',
-        'quantidade',
-        'preco_unitario',
+        'user_id',
+        'nome',
+        'cpf',
+        'endereco',
+        'valor_total',
+        'forma_pagamento',
     ];
 
     public function pedido()
@@ -21,8 +24,8 @@ class PedidoProduto extends Model
         return $this->belongsTo(Pedido::class);
     }
 
-    public function produto()
+    public function user()
     {
-        return $this->belongsTo(Produto::class, 'produto_id');
+        return $this->belongsTo(User::class);
     }
 }

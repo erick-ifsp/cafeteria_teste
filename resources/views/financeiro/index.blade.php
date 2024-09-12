@@ -81,6 +81,11 @@
                 <h5>Total: R$ {{ number_format($total, 2, ',', '.') }}</h5>
             </div>
         </div>
+
+        <div class="mt-4">
+            <a href="{{ route('financeiro.pdf', request()->query()) }}" class="btn btn-primary">Gerar PDF</a>
+        </div>
+
     </div>
 </div>
 

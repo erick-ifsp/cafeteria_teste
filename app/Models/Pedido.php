@@ -14,6 +14,7 @@ class Pedido extends Model
         'total',
         'status',
         'metodo_pagamento',
+        'entrega',
         'created_at',
         'updated_at',
     ];

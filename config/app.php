@@ -150,12 +150,21 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-
         /*
          * Provedores de Serviços do Aplicativo...
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
         // Outros provedores de serviço...
+    ],
+
+    'aliases' => [
+
+        'Route' => "Illuminate\Support\Facades\Route",
+        'App' => Illuminate\Support\Facades\App::class,
+        'Auth' => Illuminate\Support\Facades\Auth::class,
+        'PDF' => Barryvdh\DomPDF\Facade\Pdf::class,
+        'DB' => Illuminate\Support\Facades\DB::class,
     ],
 ];

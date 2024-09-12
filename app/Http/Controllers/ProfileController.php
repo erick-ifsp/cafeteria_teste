@@ -54,6 +54,7 @@ class ProfileController extends Controller
     public function storeEndereco(Request $request)
     {
         $request->validate([
+            'cpf' => 'required|string|max:14',
             'rua' => 'required|string|max:255',
             'cidade' => 'required|string|max:255',
             'estado' => 'required|string|max:255',
@@ -62,6 +63,7 @@ class ProfileController extends Controller
 
         Endereco::create([
             'user_id' => auth()->id(),
+            'cpf' => $request->cpf,
             'rua' => $request->rua,
             'cidade' => $request->cidade,
             'estado' => $request->estado,

@@ -9,10 +9,10 @@ class Endereco extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'rua', 'cidade', 'estado', 'cep'];
+    protected $fillable = ['user_id', 'cpf', 'rua', 'cidade', 'estado', 'cep'];
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -59,7 +60,7 @@
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-lg navbar-custom">
-            <a class="nav-link active" aria-current="page" href="/">Cafeteria</a>
+            <a class="nav-link active mr-5" aria-current="page" href="/">Cafeteria</a>
 
 
             <div class="collapse navbar-collapse" id="navbarNav">

@@ -2,8 +2,9 @@
 
 @section('content')
 
+
 <div class="sidebar" id="sidebar">
-    <nav class="nav flex-column ml-2">  
+    <nav class="nav flex-column ml-2">
         <a class="nav-link" href="{{ route('carrinho.index') }}">Carrinho</a>
         <a class="nav-link" href="{{ route('sobre') }}">Sobre Nós</a>
 
@@ -61,27 +62,19 @@
     <div class="row">
         @foreach ($produtos as $produto)
             <div class="col-lg-3 col-md-4 col-sm-6 mb-4 d-flex align-items-stretch">
-                <div class="card w-100">
-                    <div class="ratio ratio-1x1">
-                        @if($produto->produto_arquivo)
-                            <img src="{{ asset('storage/' . $produto->produto_arquivo) }}" class="card-img-top"
-                                alt="{{ $produto->nome }}">
-                        @else
-                            <div class="d-flex align-items-center justify-content-center bg-light h-100">
-                                <span class="text-muted fs-4">Imagem Indisponível</span>
-                            </div>
-                        @endif
-                    </div>
-                    <div class="card-body text-center">
-                        <h5 class="card-title fs-5">
-                            <a href="{{ route('produtos.show', ['id' => $produto->id]) }}"
-                                class="text-decoration-none text-dark">
+                <div class="card">
+                    <img src="{{ asset('storage/' . $produto->produto_arquivo) }}" class="card-img-top"
+                        alt="{{ $produto->nome }}" style="width: 250px; height: 250px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="{{ route('produtos.show', ['id' => $produto->id]) }}" style="color: #111111">
                                 {{ $produto->nome }}
                             </a>
                         </h5>
-                        <p class="card-text">Categoria: {{ $produto->categoria }}</p>
-                        <p class="card-text text-center fw-bold fs-4">R$ {{ number_format($produto->preco, 2, ',', '.') }}
+                        <p class="card-text">
+                            Categoria: {{ $produto->categoria }}
                         </p>
+                        <p class="h6 card-text">R$ {{ number_format($produto->preco, 2, ',', '.') }}</p>
                     </div>
                 </div>
             </div>

@@ -40,7 +40,7 @@
                         </div>
                         <div class="d-flex gap-2">
                             <input type="number" name="quantidade" class="form-control quantidade" value="1" min="1"
-                                style="width: 65px; text-align: center;">
+                                max="50" style="width: 65px; text-align: center;">
                             <button id="add-to-cart-form" class="btn" type="submit"
                                 style="background-color: #35221B; color: #f1f1f1">Adicionar ao
                                 Carrinho
@@ -105,17 +105,17 @@
     }
 
     document.getElementById('add-to-cart-form').addEventListener('submit', function (event) {
-    event.preventDefault(); // Impede o recarregamento da página
+        event.preventDefault(); // Impede o recarregamento da página
 
-    var popup = document.getElementById('cart-confirmation-popup');
-    popup.style.display = 'block'; // Exibe o popup
+        var popup = document.getElementById('cart-confirmation-popup');
+        popup.style.display = 'block'; // Exibe o popup
 
-    setTimeout(function () {
-        popup.style.display = 'none'; // Esconde o popup após 10 segundos
-    }, 10000);
+        setTimeout(function () {
+            popup.style.display = 'none'; // Esconde o popup após 10 segundos
+        }, 10000);
 
-    // Aqui você pode fazer um submit do formulário via AJAX, ou redirecionar a página conforme necessário
-});
+        // Aqui você pode fazer um submit do formulário via AJAX, ou redirecionar a página conforme necessário
+    });
 
 </script>
 

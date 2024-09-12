@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Pedido;
 use App\Models\Financeiro;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PedidoController extends Controller
 {
@@ -94,4 +95,16 @@ class PedidoController extends Controller
             return redirect()->back()->with('success', 'Pedido concluído e registrado no financeiro.');
         }
     }
+
+    public function gerarNotaFiscal($id)
+    {
+        $pedido = Pedido::with('produtos', 'usuario')->findOrFail($id);
+
+        // Carrega a view que será usada para o PDF
+        $pdf = PDF::loadView('pdf.nota_fiscal', compact('pedido'));
+
+        // Retorna o PDF para download ou exibição
+        return $pdf->download('nota_fiscal_pedido_' . $pedido->id . '.pdf');
+    }
+
 }

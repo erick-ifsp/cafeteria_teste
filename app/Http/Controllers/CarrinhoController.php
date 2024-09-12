@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Carrinho;
 use App\Models\Cartao;
 use App\Models\Pedido;
+use App\Models\Endereco;
+use App\Models\Notas_fiscais;
 use App\Models\PedidoProduto;
 
 class CarrinhoController extends Controller
@@ -20,15 +22,17 @@ class CarrinhoController extends Controller
         $user = auth()->user();
         $carrinhoItems = Carrinho::where('user_id', $user->id)->with('produto')->get();
         $cartoes = Cartao::where('user_id', $user->id)->get();
+        $enderecos = Endereco::where('user_id', $user->id)->get();
 
         if ($carrinhoItems->isEmpty()) {
             return view('carrinho.index')->with([
                 'message' => 'Seu carrinho está vazio.',
-                'cartoes' => $cartoes
+                'cartoes' => $cartoes,
+                'enderecos' => $enderecos
             ]);
         }
 
-        return view('carrinho.index', compact('carrinhoItems', 'cartoes'));
+        return view('carrinho.index', compact('carrinhoItems', 'cartoes', 'enderecos'));
     }
 
     public function AdicionarCarrinho(Request $request, $produtoId)
@@ -108,10 +112,24 @@ class CarrinhoController extends Controller
             }),
             'status' => 'Pendente',
             'metodo_pagamento' => $request->input('metodo_pagamento'),
-            'cartao_id' => $request->input('cartao') ?? null, // Adicionando o ID do cartão se for pago com cartão
+            'cartao_id' => $request->input('cartao') ?? null,
+            'entrega' => $request->input('entrega'),
+            'endereco_id' => $request->input('endereco') !== 'novo' ? $request->input('endereco') : null,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+
+        if ($request->input('endereco') === 'novo') {
+            $endereco = Endereco::create([
+                'user_id' => $user->id,
+                'rua' => $request->input('rua'),
+                'cidade' => $request->input('cidade'),
+                'estado' => $request->input('estado'),
+                'cep' => $request->input('cep'),
+            ]);
+
+            $pedido->update(['endereco_id' => $endereco->id]);
+        }
 
         foreach ($carrinhoItems as $item) {
             PedidoProduto::create([
@@ -123,6 +141,18 @@ class CarrinhoController extends Controller
         }
 
         Carrinho::where('user_id', $user->id)->delete();
+
+        $endereco = Endereco::where('user_id', $user->id)->firstOrFail();
+
+        Notas_fiscais::create([
+            'pedido_id' => $pedido->id,
+            'user_id' => $user->id,
+            'nome' => $user->name,
+            'cpf' => $endereco->cpf,
+            'endereco' => $endereco->rua . ', ' . $endereco->cidade . ' - ' . $endereco->estado . ', ' . $endereco->cep,
+            'valor_total' => $pedido->total,
+            'forma_pagamento' => $request->input('metodo_pagamento'),
+        ]);
 
         return redirect()->route('carrinho.index')->with('success', 'Compra realizada com sucesso!');
     }

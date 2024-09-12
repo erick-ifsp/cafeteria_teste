@@ -34,7 +34,7 @@
                         <input type="email" class="form-control" maxlength="100" id="email" name="email" value="{{ $user->email }}"
                             required>
                     </div>
-                    <button type="submit" class="btn btn-block" style="background-color: #35221B; color: #f1f1f1">Atualizar Perfil</button>
+                    <button type="submit" class="btn  " style="background-color: #35221B; color: #f1f1f1">Atualizar Perfil</button>
                 </form>
 
                 <hr class="my-4">
@@ -55,7 +55,7 @@
                         <input type="password" maxlength="50" class="form-control" id="password_confirmation"
                             name="password_confirmation" required>
                     </div>
-                    <button type="submit" class="btn btn-block" style="background-color: #35221B; color: #f1f1f1">Atualizar Senha</button>
+                    <button type="submit" class="btn  " style="background-color: #35221B; color: #f1f1f1">Atualizar Senha</button>
                 </form>
             </div>
 
@@ -64,6 +64,7 @@
                 <table class="table">
                     <thead>
                         <tr>
+                            <th scope="col">CPF</th>
                             <th scope="col">Rua</th>
                             <th scope="col">Cidade</th>
                             <th scope="col">Estado</th>
@@ -74,12 +75,13 @@
                     <tbody>
                         @foreach($enderecos as $endereco)
                             <tr>
+                                <td>{{ $endereco->cpf }}</td>
                                 <td>{{ $endereco->rua }}</td>
                                 <td>{{ $endereco->cidade }}</td>
                                 <td>{{ $endereco->estado }}</td>
                                 <td>{{ $endereco->cep }}</td>
                                 <td>
-                                    <button type="button" class="btn btn-warning"
+                                    <button type="button" class="btn"
                                         data-edit-endereco='@json($endereco)' style="background-color: #35221B; color: #f1f1f1">
                                         Editar
                                     </button>
@@ -87,7 +89,7 @@
                                         style="display:inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger">Remover</button>
+                                        <button type="submit" class="btn" style="background-color: #35221B; color: #f1f1f1">Remover</button>
                                     </form>
                                 </td>
                             </tr>
@@ -118,14 +120,14 @@
                                 <td>{{ $cartao->nome }}</td>
                                 <td>{{ $cartao->data }}</td>
                                 <td>
-                                    <button type="button" class="btn btn-warning" data-edit-cartao='@json($cartao)' style="background-color: #35221B; color: #f1f1f1">
+                                    <button type="button" class="btn" data-edit-cartao='@json($cartao)' style="background-color: #35221B; color: #f1f1f1">
                                         Editar
                                     </button>
                                     <form action="{{ route('profile.cartao.destroy', $cartao->id) }}" method="POST"
                                         style="display:inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger" style="background-color: #35221B; color: #f1f1f1">Remover</button>
+                                        <button type="submit" class="btn" style="background-color: #35221B; color: #f1f1f1">Remover</button>
                                     </form>
                                 </td>
                             </tr>
@@ -151,6 +153,10 @@
             <div class="modal-body">
                 <form id="enderecoForm" action="{{ route('profile.endereco.store') }}" method="POST">
                     @csrf
+                    <div class="form-group mb-3">
+                    <label for="cpf" class="form-label">CPF:</label>
+                    <input type="text" class="form-control" id="cpf" name="cpf" placeholder="Digite o CPF:" required>
+                    </div>
                     <input type="hidden" id="endereco_id" name="endereco_id">
                     <div class="form-group mb-3">
                         <label for="rua" class="form-label">Rua</label>

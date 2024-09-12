@@ -1,14 +1,14 @@
 <?php
 
-use App\Http\Controllers\Auth\ForgotPasswordController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProdutoController;
 use App\Http\Controllers\DespesaController;
 use App\Http\Controllers\EstoqueController;
 use App\Http\Controllers\FuncionarioController;
 use App\Http\Controllers\CartaoController;
+use App\Http\Controllers\EnderecoController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\AccessController;
 use App\Http\Controllers\CarrinhoController;
@@ -40,8 +40,6 @@ Route::get('/perfil', function () {
     return view('perfil');
 })->name('perfil');
 
-Route::post('/carrinho/finalizar', [CarrinhoController::class, 'finalizarCompra'])->name('carrinho.finalizar');
-
 Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
@@ -56,6 +54,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile/endereco/{id}/edit', [ProfileController::class, 'editEndereco'])->name('profile.endereco.edit');
     Route::put('/profile/endereco/{id}', [ProfileController::class, 'updateEndereco'])->name('profile.endereco.update');
     Route::delete('/profile/endereco/{id}', [ProfileController::class, 'destroyEndereco'])->name('profile.endereco.destroy');
+    Route::post('/enderecos', [EnderecoController::class, 'store'])->name('enderecos.store');
 
     // Rotas para Cartões
     Route::post('/profile/cartao', [ProfileController::class, 'storeCartao'])->name('profile.cartao.store');
@@ -159,9 +158,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/carrinho', [CarrinhoController::class, 'viewCarrinho'])->name('carrinho.index');
     Route::put('/carrinho/{id}', [CarrinhoController::class, 'AtualizarCarrinho'])->name('carrinho.update');
     Route::delete('/carrinho/{carrinhoItemId}', [CarrinhoController::class, 'RemoverCarrinho'])->name('carrinho.remover');
+    Route::post('/carrinho', [CarrinhoController::class, 'finalizarCompra'])->name('carrinho.finalizar');
 
     //FINANCEIRO
     Route::get('/financeiro', [FinanceiroController::class, 'index'])->name('financeiro')->middleware('can:admin');
+
+    //PDF 
+    Route::get('pedidos/{id}/nota-fiscal', [PedidoController::class, 'gerarNotaFiscal'])->name('pedidos.nota-fiscal');
+    Route::get('/financeiro/pdf', [FinanceiroController::class, 'generatePdf'])->name('financeiro.pdf');
 });
 
 require __DIR__ . '/auth.php';
