@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.gerenciamento')
 
 @section('title', 'Financeiro')
 
@@ -47,6 +47,11 @@
 
                 <button type="submit" class="btn btn-block mt-4"
                     style="background-color: #35221B; color: #f1f1f1">Aplicar</button>
+
+                <div class="mt-4">
+                    <a href="{{ route('financeiro.pdf', request()->query()) }}" class="btn btn-block mt-4"
+                        style="background-color: #35221B; color: #f1f1f1">Gerar PDF</a>
+                </div>
             </form>
         </div>
 
@@ -81,11 +86,6 @@
                 <h5>Total: R$ {{ number_format($total, 2, ',', '.') }}</h5>
             </div>
         </div>
-
-        <div class="mt-4">
-            <a href="{{ route('financeiro.pdf', request()->query()) }}" class="btn btn-primary">Gerar PDF</a>
-        </div>
-
     </div>
 </div>
 

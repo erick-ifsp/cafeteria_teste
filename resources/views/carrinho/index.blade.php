@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.gerenciamento')
 
 @section('content')
 <div class="container">
@@ -240,7 +240,10 @@
             </div>
         </div>
     @else
-        <p class="text-center">Seu carrinho está vazio.</p>
+        <p class="text-left h6">Seu carrinho está vazio. Acesse o <strong><a href="{{ url('cardapio') }}" class="txt"
+                    style="color: #35221B">Cardápio</a></strong> e veja nossos
+            produtos ou acesse seus <strong><a href="{{ url('pedidos') }}" class="txt"
+                    style="color: #35221B">Pedidos</a></strong>!</p>
     @endif
 </div>
 
@@ -344,5 +347,6 @@
         }
     });
 
+    $noFooter = true;
 </script>
 @endsection

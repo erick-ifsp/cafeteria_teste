@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.gerenciamento')
 
 @section('title', 'Adicionar Estoque')
 
@@ -22,8 +22,8 @@
             <input type="number" class="form-control" name="valor" maxlength="20" placeholder="Digite o valor da estoque:" required>
         </div>
         <div class="d-flex">
-            <button type="submit" class="btn btn-primary me-2">Adicionar</button>
-            <a href="{{ route('estoques') }}" class="btn btn-secondary">Cancelar</a>
+            <button type="submit" class="btn me-2" style="background-color: #35221B; color: #f1f1f1">Adicionar</button>
+            <a href="{{ route('estoques') }}" class="btn" style="background-color: #35221B; color: #f1f1f1">Cancelar</a>
         </div>
     </form>
 </div>

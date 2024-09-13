@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Pedido;
+use App\Models\Produto;
 use App\Models\Financeiro;
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -36,30 +37,6 @@ class PedidoController extends Controller
             ->firstOrFail();
 
         return view('pedidos.show', compact('pedido'));
-    }
-
-    public function store(Request $request)
-    {
-        $request->validate([
-            'total' => 'required|numeric',
-            'status' => 'required|string',
-        ]);
-
-        $pedido = Pedido::create([
-            'user_id' => auth()->id(),
-            'total' => $request->total,
-            'status' => $request->status,
-        ]);
-
-        foreach ($request->produtos as $produto) {
-            $pedido->pedidoProdutos()->create([
-                'produto_id' => $produto['id'],
-                'quantidade' => $produto['quantidade'],
-                'preco_unitario' => $produto['preco_unitario'],
-            ]);
-        }
-
-        return redirect()->route('pedidos')->with('success', 'Pedido criado com sucesso!');
     }
 
     public function updateStatus(Request $request, $id)
@@ -107,4 +84,52 @@ class PedidoController extends Controller
         return $pdf->download('nota_fiscal_pedido_' . $pedido->id . '.pdf');
     }
 
+    public function store(Request $request)
+    {
+        // Remove o "R$" e converte a vírgula decimal para ponto
+        $request->merge([
+            'total' => str_replace(['R$', '.', ','], ['', '', '.'], $request->total)
+        ]);
+
+        // Validação
+        $request->validate([
+            'cliente' => 'required|string|max:35',
+            'produtos' => 'required|array',
+            'total' => 'required|numeric|min:0',
+            'metodo_pagamento' => 'required|string|max:35'
+        ]);
+
+        // Cria o pedido
+        $pedido = Pedido::create([
+            'user_id' => auth()->id(),  // O funcionário que criou o pedido
+            'total' => $request->total,
+            'status' => 'Pendente',     // Status inicial do pedido
+        ]);
+
+        // Adiciona produtos ao pedido
+        foreach ($request->produtos as $produtoId => $produtoData) {
+            if ($produtoData['quantidade'] > 0) {
+                $produto = Produto::find($produtoId);
+                if ($produto) {
+                    $pedido->pedidoProdutos()->create([
+                        'produto_id' => $produto->id,
+                        'quantidade' => $produtoData['quantidade'],
+                        'preco_unitario' => $produto->preco,
+                        'metodo_pagamento' => $request->metodo_pagamento  // Corrigido
+                    ]);
+                }
+            }
+        }
+
+        return redirect()->route('pedidos')->with('success', 'Pedido criado com sucesso!');
+    }
+
+    public function create()
+    {
+        // Listar todos os produtos para serem exibidos no formulário de criação de pedido
+        $produtos = Produto::all();
+
+        // Renderiza a página de criação de pedido manual
+        return view('pedidos.create', compact('produtos'));
+    }
 }

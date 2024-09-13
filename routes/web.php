@@ -121,6 +121,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', [PedidoController::class, 'index'])->name('pedidos.index');
         Route::get('/pedidos/{id}', [PedidoController::class, 'show'])->name('pedidos.show');
         Route::put('/pedidos/{id}/status', [PedidoController::class, 'updateStatus'])->name('pedidos.updateStatus')->middleware('can:func');
+        Route::post('/pedidos', [PedidoController::class, 'store'])->name('pedidos.store');
+        Route::get('/create', [PedidoController::class, 'create'])->name('pedidos.create')->middleware('can:func');
+
     });
     Route::get('/pedidos', [PedidoController::class, 'index'])->name('pedidos');
 

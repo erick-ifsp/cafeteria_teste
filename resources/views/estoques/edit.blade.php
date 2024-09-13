@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.gerenciamento')
 
 @section('title', 'Editar Estoque')
 
@@ -30,8 +30,8 @@
         </div>
 
         <div class="form-group">
-            <button type="submit" class="btn btn-primary">Salvar</button>
-            <a href="{{ route('estoques') }}" class="btn btn-secondary">Cancelar</a>
+            <button type="submit" class="btn me-2" style="background-color: #35221B; color: #f1f1f1">Salvar</button>
+            <a href="{{ route('estoques') }}" class="btn" style="background-color: #35221B; color: #f1f1f1">Cancelar</a>
         </div>
     </form>
 </div>

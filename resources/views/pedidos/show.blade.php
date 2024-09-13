@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.gerenciamento')
 
 @section('content')
 <div class="container mt-5">
@@ -23,7 +23,7 @@
     <h2 class="mb-4">Produtos do Pedido</h2>
     <div class="table-responsive">
         <table class="table table-striped table-bordered">
-            <thead class="thead-dark">
+            <thead class="thead">
                 <tr>
                     <th>Nome do Produto</th>
                     <th>Quantidade</th>

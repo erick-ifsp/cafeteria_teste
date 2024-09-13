@@ -47,10 +47,6 @@
                             </button>
                         </div>
                     </form>
-                    <div id="cart-confirmation-popup" class="alert alert-success mt-3" role="alert"
-                        style="display: none;">
-                        O produto foi adicionado ao carrinho.
-                    </div>
                 </div>
             </div>
         </div>
