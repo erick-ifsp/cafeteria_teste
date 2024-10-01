@@ -160,7 +160,6 @@ return [
     ],
 
     'aliases' => [
-
         'Route' => "Illuminate\Support\Facades\Route",
         'App' => Illuminate\Support\Facades\App::class,
         'Auth' => Illuminate\Support\Facades\Auth::class,

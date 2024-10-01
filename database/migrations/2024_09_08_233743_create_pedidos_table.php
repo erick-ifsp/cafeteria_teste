@@ -12,6 +12,9 @@ class CreatePedidosTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->string('status', 50);
+            $table->decimal('total', 10, 2);
+            $table->string('metodo_pagamento', 35);
+            $table->string('entrega', 30);
             $table->timestamps();
             $table->engine = 'InnoDB';
 

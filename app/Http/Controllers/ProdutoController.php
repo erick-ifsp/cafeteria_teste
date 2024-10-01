@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Storage;
 use App\Models\Produto;
 use App\Models\Categoria;
 use App\Models\Carrinho;
 use Illuminate\Http\Request;
+use App\Models\Variacao;
 
 class ProdutoController extends Controller
 {
@@ -13,7 +15,6 @@ class ProdutoController extends Controller
     {
         $query = Produto::query();
 
-        // Filtros de busca e categoria
         if ($request->filled('nome')) {
             $query->where('nome', 'like', '%' . $request->nome . '%');
         }
@@ -22,7 +23,6 @@ class ProdutoController extends Controller
             $query->whereIn('categoria', $request->categorias);
         }
 
-        // Aplicar a ordenação
         if ($request->filled('ordem')) {
             switch ($request->ordem) {
                 case 'az':
@@ -56,7 +56,6 @@ class ProdutoController extends Controller
     {
         $query = Produto::query();
 
-        // Filtros de busca e categoria
         if ($request->filled('nome')) {
             $query->where('nome', 'like', '%' . $request->nome . '%');
         }
@@ -97,110 +96,109 @@ class ProdutoController extends Controller
     {
         $validatedData = $request->validate([
             'nome' => 'required|string|max:255',
-            'preco' => 'required|string',
             'categoria' => 'required|string|max:255',
+            'descricao' => 'required|string|max:1000',
+            'produto_arquivo' => 'required|file|image|max:2048',
             'tipos' => 'required|array',
-            'tipos.*' => 'string|max:255',
-            'descricao' => 'required|string|max:250',
-            'produto_arquivo' => 'required|file|image',
-            'produto_arquivo2' => 'nullable|file|image',
-            'produto_arquivo3' => 'nullable|file|image',
-            'produto_arquivo4' => 'nullable|file|image',
+            'tipos.*.nome' => 'required|string|max:255',
+            'tipos.*.preco' => 'required|numeric',
         ]);
 
-        // Converte a vírgula para ponto e garante que o valor é numérico
-        $precoConvertido = str_replace(',', '.', $validatedData['preco']);
-
-        if (!is_numeric($precoConvertido)) {
-            return redirect()->back()->withErrors(['preco' => 'O preço informado é inválido.']);
-        }
-
-        $tiposConcatenados = implode(', ', $validatedData['tipos']);
-
-        // Preparar dados para criação do produto
         $data = [
             'nome' => $validatedData['nome'],
-            'preco' => $precoConvertido,
             'categoria' => $validatedData['categoria'],
             'descricao' => $validatedData['descricao'],
-            'tipos' => $tiposConcatenados,
+            'preco' => $validatedData['tipos'][0]['preco'],
         ];
 
-        // Processar arquivos
         if ($request->hasFile('produto_arquivo')) {
-            $arquivo = rand(0, 999999) . '-' . $request->file('produto_arquivo')->getClientOriginalName();
-            $path = $request->file('produto_arquivo')->storeAs('uploads', $arquivo);
+            $arquivo = $request->file('produto_arquivo');
+
+            $novoNomeArquivo = time() . '-' . $arquivo->getClientOriginalName();
+
+            $path = $arquivo->storeAs('public/uploads', $novoNomeArquivo);
+
             $data['produto_arquivo'] = $path;
+        } else {
+            return back()->withErrors(['produto_arquivo' => 'Erro ao carregar a imagem.']);
         }
 
-        if ($request->hasFile('produto_arquivo2')) {
-            $arquivo2 = rand(0, 999999) . '-' . $request->file('produto_arquivo2')->getClientOriginalName();
-            $path2 = $request->file('produto_arquivo2')->storeAs('uploads', $arquivo2);
-            $data['produto_arquivo2'] = $path2;
+        $produto = Produto::create($data);
+
+        foreach ($validatedData['tipos'] as $tipo) {
+            Variacao::create([
+                'produto_id' => $produto->id,
+                'nome' => $tipo['nome'],
+                'preco' => $tipo['preco'],
+            ]);
         }
 
-        if ($request->hasFile('produto_arquivo3')) {
-            $arquivo3 = rand(0, 999999) . '-' . $request->file('produto_arquivo3')->getClientOriginalName();
-            $path3 = $request->file('produto_arquivo3')->storeAs('uploads', $arquivo3);
-            $data['produto_arquivo3'] = $path3;
-        }
-
-        if ($request->hasFile('produto_arquivo4')) {
-            $arquivo4 = rand(0, 999999) . '-' . $request->file('produto_arquivo4')->getClientOriginalName();
-            $path4 = $request->file('produto_arquivo4')->storeAs('uploads', $arquivo4);
-            $data['produto_arquivo4'] = $path4;
-        }
-
-        // Criar o produto
-        Produto::create($data);
-
-        return redirect()->route('produtos')->with('success', 'Produto criado com sucesso!');
+        return redirect()->route('produtos')->with('success', 'Produto com variações criado com sucesso!');
     }
-
-
 
     public function edit($id)
     {
-        $produtos = Produto::where('id', $id)->first();
+        $produtos = Produto::with('variacoes')->find($id);
         $categorias = Categoria::all();
-        if (!empty($produtos)) {
+        if ($produtos) {
             return view('produtos.edit', compact('produtos', 'categorias'));
         } else {
-            return redirect()->route('produtos', );
+            return redirect()->route('produtos');
         }
     }
 
     public function update(Request $request, $id)
     {
-        $produto = Produto::findOrFail($id);
+        $produto = Produto::with('variacoes')->findOrFail($id);
 
         $request->validate([
             'nome' => 'required|string|max:255',
-            'preco' => 'required|numeric',
             'categoria' => 'required|string|max:255',
-            'produto_arquivo' => 'required_if:produto_arquivo_removed,null|file|image|max:2048',
+            'descricao' => 'required|string|max:1000',
+            'produto_arquivo' => 'nullable|file|image|max:2048',
+            'tipos' => 'required|array',
+            'tipos.*.nome' => 'required|string|max:255',
+            'tipos.*.preco' => 'required|numeric',
         ]);
 
         $produto->nome = $request->input('nome');
-        $produto->preco = $request->input('preco');
         $produto->categoria = $request->input('categoria');
         $produto->descricao = $request->input('descricao');
 
         if ($request->hasFile('produto_arquivo')) {
+            if ($produto->produto_arquivo) {
+                Storage::delete($produto->produto_arquivo);
+            }
             $produto->produto_arquivo = $request->file('produto_arquivo')->store('produtos');
         } elseif ($request->input('produto_arquivo_removed') === 'deleted') {
             $produto->produto_arquivo = null;
         }
 
-        foreach (['produto_arquivo2', 'produto_arquivo3', 'produto_arquivo4'] as $key) {
-            if ($request->hasFile($key)) {
-                $produto->$key = $request->file($key)->store('produtos');
-            } elseif ($request->input("{$key}_removed") === 'deleted') {
-                $produto->$key = null;
+        $produto->save();
+
+        $variacoesExistentes = $produto->variacoes->pluck('id')->toArray();
+
+        $variacoesMantidas = [];
+
+        foreach ($request->tipos as $index => $tipo) {
+            if (isset($tipo['id'])) {
+                $variacao = Variacao::find($tipo['id']);
+                if ($variacao) {
+                    $variacao->nome = $tipo['nome'];
+                    $variacao->preco = $tipo['preco'];
+                    $variacao->save();
+                    $variacoesMantidas[] = $variacao->id;
+                }
+            } else {
+                $produto->variacoes()->create([
+                    'nome' => $tipo['nome'],
+                    'preco' => $tipo['preco']
+                ]);
             }
         }
 
-        $produto->save();
+        $variacoesParaRemover = array_diff($variacoesExistentes, $variacoesMantidas);
+        Variacao::destroy($variacoesParaRemover);
 
         return redirect()->route('produtos')->with('success', 'Produto atualizado com sucesso!');
     }
@@ -213,8 +211,8 @@ class ProdutoController extends Controller
 
     public function show($id)
     {
+        $produto = Produto::with('variacoes')->findOrFail($id);
         $carrinhoItems = Carrinho::all();
-        $produto = Produto::findOrFail($id);
         return view('produtos.show', compact('produto', 'carrinhoItems'));
     }
 }

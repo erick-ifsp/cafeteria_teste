@@ -13,6 +13,7 @@ class CreateFinanceirosTable extends Migration
             $table->decimal('valor', 10, 2);
             $table->string('descricao', 255);
             $table->unsignedBigInteger('user_id');
+            $table->integer('gerenciamento_id');
             $table->timestamps();
             $table->engine = 'InnoDB';
 

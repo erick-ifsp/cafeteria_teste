@@ -30,32 +30,39 @@
     </nav>
 </div>
 
-<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
     <ol class="carousel-indicators">
-        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+        <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"></li>
+        <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"></li>
+        <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"></li>
     </ol>
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <img src="images/imagem1.webp" class="d-block w-100" alt="Slide 1">
+            <div class="ratio custom-ratio">
+                <img src="images/cafeteria.webp" class="d-block w-100" alt="Slide 1" style="object-fit: cover;">
+            </div>
         </div>
         <div class="carousel-item">
-            <img src="images/imagem1.webp" class="d-block w-100" alt="Slide 2">
+            <div class="ratio custom-ratio">
+                <img src="images/cafeteria2.jpg" class="d-block w-100" alt="Slide 2" style="object-fit: cover;">
+            </div>
         </div>
         <div class="carousel-item">
-            <img src="images/imagem1.webp" class="d-block w-100" alt="Slide 3">
+            <div class="ratio custom-ratio">
+                <img src="images/cafeteria3.png" class="d-block w-100" alt="Slide 3" style="object-fit: cover;">
+            </div>
         </div>
     </div>
-    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="sr-only">Anterior</span>
     </a>
-    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-bs-slide="next">
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="sr-only">Próximo</span>
     </a>
 </div>
+
 
 <div class="container mt-5">
     <h2 class="mb-4 text-center">As melhores ofertas em Produtos</h2>
@@ -81,7 +88,7 @@
         @endforeach
     </div>
     <div class="text-center mt-4">
-        <a href="{{ route('cardapio') }}" class="btn btn-dark">Ver mais</a>
+        <a href="{{ route('cardapio') }}" class="btn" style="background-color: #35221B; color: #f1f1f1">Ver mais</a>
     </div>
 </div>
 
@@ -127,6 +134,27 @@
     .sidebar .nav-item a {
         width: 100%;
         padding: 10px 15px;
+    }
+
+    .custom-ratio {
+        position: relative;
+        width: 100%;
+        padding-top: 42.857%;
+    }
+
+    .custom-ratio img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    @media (max-width: 768px) {
+        .custom-ratio {
+            padding-top: 100%;
+        }
     }
 </style>
 @endsection

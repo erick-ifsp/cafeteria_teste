@@ -19,7 +19,7 @@
         </div>
         <div class="form-group mb-4">
             <label for="valor" class="form-label">Valor:</label>
-            <input type="number" class="form-control" maxlength="20" name="valor" placeholder="Digite o valor da despesa:" required>
+            <input type="number" class="form-control" maxlength="10" name="valor" placeholder="Digite o valor da despesa:" required>
         </div>
         <div class="d-flex">
             <button type="submit" class="btn me-2" style="background-color: #35221B; color: #f1f1f1">Adicionar</button>

@@ -25,7 +25,7 @@
 
         <div class="form-group mb-3">
             <label for="valor" class="form-label">Valor:</label>
-            <input type="number" class="form-control" maxlength="20" name="valor" value="{{ $despesas->valor }}"
+            <input type="number" class="form-control" maxlength="10" name="valor" value="{{ $despesas->valor }}"
                 placeholder="Digite o valor da despesa:" required>
         </div>
 

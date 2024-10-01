@@ -26,38 +26,34 @@
                                 <td>{{ $pedido->usuario->name }}</td>
                                 <td>{{ number_format($pedido->total, 2, ',', '.') }}</td>
                                 <td>
-                                    @if($pedido->status == 'Pendente')
-                                        <span class="badge bg-secondary">{{ $pedido->status }}</span>
-                                    @elseif($pedido->status == 'Pronto')
-                                        <span class="badge bg-warning text-dark">{{ $pedido->status }}</span>
-                                    @elseif($pedido->status == 'Concluído')
-                                        <span class="badge bg-success">{{ $pedido->status }}</span>
-                                    @endif
+                                    <form action="{{ route('pedidos.status', $pedido->id) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('PUT')
+                                        <select name="status" class="form-select" onchange="this.form.submit()">
+                                            <option value="Pendente" {{ $pedido->status == 'Pendente' ? 'selected' : '' }}>Pendente
+                                            </option>
+                                            <option value="Em Produção" {{ $pedido->status == 'Em Produção' ? 'selected' : '' }}>Em
+                                                Produção</option>
+                                            <option value="A Caminho" {{ $pedido->status == 'A Caminho' ? 'selected' : '' }}>A Caminho
+                                            </option>
+                                            <option value="Concluído" {{ $pedido->status == 'Concluído' ? 'selected' : '' }}>Concluído
+                                            </option>
+                                            <option value="Estorno" {{ $pedido->status == 'Estorno' ? 'selected' : '' }}>Estorno
+                                            </option>
+                                        </select>
+                                    </form>
                                 </td>
                                 <td>
                                     <a href="{{ route('pedidos.show', $pedido->id) }}" class="btn"
                                         style="background-color: #35221B; color: #f1f1f1">Ver Detalhes</a>
-                                    @if($pedido->status == 'Pendente')
-                                        <form action="{{ route('pedidos.updateStatus', $pedido->id) }}" method="POST" class="d-inline">
-                                            @csrf
-                                            @method('PUT')
-                                            <input type="hidden" name="status" value="Pronto">
-                                            <button type="submit" class="btn" style="background-color: #98C9A3; color: #f1f1f1">Marcar
-                                                como Pronto</button>
-                                        </form>
-                                    @elseif($pedido->status == 'Pronto')
-                                        <form action="{{ route('pedidos.updateStatus', $pedido->id) }}" method="POST" class="d-inline">
-                                            @csrf
-                                            @method('PUT')
-                                            <input type="hidden" name="status" value="Concluído">
-                                            <button type="submit" class="btn btn-sm"
-                                                style="background-color: #98C9A3; color: #f1f1f1">Marcar como Concluído</button>
-                                        </form>
-                                    @endif
                                 </td>
                                 <td>
-                                    <a href="{{ route('pedidos.nota-fiscal', $pedido->id) }}" class="btn"
-                                        style="background-color: #35221B; color: #f1f1f1">Gerar Nota Fiscal</a>
+                                    @if($pedido->status === 'Concluído')
+                                        <a href="{{ route('pedidos.nota-fiscal', $pedido->id) }}" class="btn"
+                                            style="background-color: #35221B; color: #f1f1f1">Gerar Nota Fiscal</a>
+                                    @else
+                                        <span class="text-muted">N/A</span>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -87,21 +83,34 @@
                                 <td>{{ $pedido->id }}</td>
                                 <td>{{ number_format($pedido->total, 2, ',', '.') }}</td>
                                 <td>
-                                    @if($pedido->status == 'Pendente')
-                                        <span class="badge bg-secondary">{{ $pedido->status }}</span>
-                                    @elseif($pedido->status == 'Pronto')
-                                        <span class="badge bg-warning text-dark">{{ $pedido->status }}</span>
-                                    @elseif($pedido->status == 'Concluído')
-                                        <span class="badge bg-success">{{ $pedido->status }}</span>
-                                    @endif
+                                    <form action="{{ route('pedidos.status', $pedido->id) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('PUT')
+                                        <select name="status" class="form-select" onchange="this.form.submit()" disabled>
+                                            <option value="Pendente" {{ $pedido->status == 'Pendente' ? 'selected' : '' }}>Pendente
+                                            </option>
+                                            <option value="Em Produção" {{ $pedido->status == 'Em Produção' ? 'selected' : '' }}>Em
+                                                Produção</option>
+                                            <option value="A Caminho" {{ $pedido->status == 'A Caminho' ? 'selected' : '' }}>A Caminho
+                                            </option>
+                                            <option value="Concluído" {{ $pedido->status == 'Concluído' ? 'selected' : '' }}>Concluído
+                                            </option>
+                                            <option value="Estorno" {{ $pedido->status == 'Estorno' ? 'selected' : '' }}>Estorno
+                                            </option>
+                                        </select>
+                                    </form>
                                 </td>
                                 <td>
                                     <a href="{{ route('pedidos.show', $pedido->id) }}" class="btn"
                                         style="background-color: #35221B; color: #f1f1f1">Ver Detalhes</a>
                                 </td>
                                 <td>
-                                    <a href="{{ route('pedidos.nota-fiscal', $pedido->id) }}" class="btn"
-                                        style="background-color: #35221B; color: #f1f1f1">Gerar Nota Fiscal</a>
+                                    @if($pedido->status === 'Concluído')
+                                        <a href="{{ route('pedidos.nota-fiscal', $pedido->id) }}" class="btn"
+                                            style="background-color: #35221B; color: #f1f1f1">Gerar Nota Fiscal</a>
+                                    @else
+                                        <span class="text-muted">N/A</span>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -113,9 +122,10 @@
 </div>
 
 <div class="row mt-4 fixed-bottom bg-white py-3 border-top">
-        <div class="col-md-11 text-end mb-2 mt-2">
-            <a href=" {{ route('pedidos.create') }} " class="btn" style="background-color: #98C9A3; color: #f1f1f1">Adicionar Pedido</a>
-        </div>
+    <div class="col-md-11 text-end mb-2 mt-2">
+        <a href="{{ route('pedidos.create') }}" class="btn" style="background-color: #98C9A3; color: #f1f1f1">Adicionar
+            Pedido</a>
+    </div>
 </div>
 
 @endsection

@@ -13,7 +13,7 @@ class CreatePedidoProdutosTable extends Migration
             $table->unsignedBigInteger('pedido_id');
             $table->unsignedBigInteger('produto_id');
             $table->integer('quantidade');
-            $table->decimal('preco', 10, 2);
+            $table->decimal('preco_unitario', 10, 2);
             $table->timestamps();
             $table->engine = 'InnoDB';
 

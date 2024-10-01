@@ -11,6 +11,7 @@ class Financeiro extends Model
 
     protected $fillable = [
         'user_id',
+        'gerenciamento_id',
         'nome',
         'descricao',
         'tipo',

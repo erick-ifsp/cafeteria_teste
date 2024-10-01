@@ -17,12 +17,9 @@ class PedidoController extends Controller
 
     public function index()
     {
-        // Verifica se o usuário é admin
-        if (auth()->user()->can('access')) {
-            // Retorna todos os pedidos se for admin
+        if (auth()->user()->can('func')) {
             $pedidos = Pedido::with('usuario')->orderBy('id', 'desc')->get();
         } else {
-            // Retorna apenas os pedidos do usuário autenticado se não for admin
             $pedidos = Pedido::where('user_id', auth()->id())->with('usuario')->orderBy('id', 'desc')->get();
         }
 
@@ -39,59 +36,104 @@ class PedidoController extends Controller
         return view('pedidos.show', compact('pedido'));
     }
 
-    public function updateStatus(Request $request, $id)
+    public function atualizarStatus(Request $request, $id)
     {
         $pedido = Pedido::findOrFail($id);
+        $statusAntigo = $pedido->status;
+        $pedido->status = $request->input('status');
+        $pedido->save();
 
-        $status = $request->input('status');
+        if ($pedido->status === 'Concluído') {
+            $this->adicionarVenda($pedido);
 
-        if (is_null($status) || !in_array($status, ['Pronto', 'Concluído'])) {
-            return redirect()->back()->with('error', 'Status inválido.');
+            if ($statusAntigo === 'Estorno') {
+                $this->removerDespesa($pedido);
+            }
+        } elseif ($pedido->status === 'Estorno') {
+            $this->registrarDespesa($pedido);
+
+            if ($statusAntigo === 'Concluído') {
+                $this->removerVenda($pedido);
+            }
+        } elseif ($statusAntigo === 'Concluído' || $statusAntigo === 'Estorno') {
+            if (in_array($pedido->status, ['Pendente', 'Em Produção', 'A Caminho'])) {
+                $this->removerVenda($pedido);
+                $this->removerDespesa($pedido);
+            }
+        } elseif ($statusAntigo === 'Concluído') {
+            $this->removerVenda($pedido);
         }
 
-        if ($status === 'Pronto') {
-            $pedido->status = 'Pronto';
-            $pedido->save();
-            return redirect()->back()->with('success', 'Pedido marcado como pronto.');
-        } elseif ($status === 'Concluído') {
-            $pedido->status = 'Concluído';
-            $pedido->save();
+        return redirect()->back()->with('success', 'Status atualizado com sucesso!');
+    }
 
-            foreach ($pedido->pedidoProdutos as $produto) {
+    private function removerDespesa(Pedido $pedido)
+    {
+        Financeiro::where('gerenciamento_id', $pedido->id)
+            ->where('tipo', 'Despesa')
+            ->delete();
+    }
+
+    private function adicionarVenda(Pedido $pedido)
+    {
+        foreach ($pedido->pedidoProdutos as $pedidoProduto) {
+            $produto = $pedidoProduto->produto;
+
+            if ($produto) {
                 Financeiro::create([
-                    'user_id' => $pedido->user_id,
-                    'nome' => $produto->produto->nome,
-                    'descricao' => 'Pedido realizado por: ' . $pedido->usuario->name,
+                    'user_id' => auth()->id(),
+                    'gerenciamento_id' => $pedido->id,
+                    'nome' => $produto->nome,
+                    'descricao' => 'Venda de ' . $produto->nome . ' do pedido realizado por: ' . $pedido->usuario->name,
                     'tipo' => 'Venda',
-                    'valor' => $produto->quantidade * $produto->preco_unitario,
-                    'created_at' => now(),
-                    'updated_at' => now(),
+                    'valor' => $pedidoProduto->preco_unitario * $pedidoProduto->quantidade,
+                    'data' => now(),
                 ]);
             }
-
-            return redirect()->back()->with('success', 'Pedido concluído e registrado no financeiro.');
         }
+    }
+
+    private function registrarDespesa(Pedido $pedido)
+    {
+        foreach ($pedido->pedidoProdutos as $pedidoProduto) {
+            $produto = $pedidoProduto->produto;
+
+            if ($produto) {
+                Financeiro::create([
+                    'user_id' => auth()->id(),
+                    'gerenciamento_id' => $pedido->id,
+                    'nome' => $produto->nome,
+                    'descricao' => 'Despesa de ' . $produto->nome . ' do pedido realizado por: ' . $pedido->usuario->name,
+                    'tipo' => 'Despesa',
+                    'valor' => -abs($pedidoProduto->preco_unitario * $pedidoProduto->quantidade),
+                    'data' => now(),
+                ]);
+            }
+        }
+    }
+
+    private function removerVenda(Pedido $pedido)
+    {
+        Financeiro::where('gerenciamento_id', $pedido->id)
+            ->where('tipo', 'Venda')
+            ->delete();
     }
 
     public function gerarNotaFiscal($id)
     {
         $pedido = Pedido::with('produtos', 'usuario')->findOrFail($id);
 
-        // Carrega a view que será usada para o PDF
         $pdf = PDF::loadView('pdf.nota_fiscal', compact('pedido'));
 
-        // Retorna o PDF para download ou exibição
         return $pdf->download('nota_fiscal_pedido_' . $pedido->id . '.pdf');
     }
 
     public function store(Request $request)
     {
-        // Remove o "R$" e converte a vírgula decimal para ponto
         $request->merge([
             'total' => str_replace(['R$', '.', ','], ['', '', '.'], $request->total)
         ]);
 
-        // Validação
         $request->validate([
             'cliente' => 'required|string|max:35',
             'produtos' => 'required|array',
@@ -99,14 +141,12 @@ class PedidoController extends Controller
             'metodo_pagamento' => 'required|string|max:35'
         ]);
 
-        // Cria o pedido
         $pedido = Pedido::create([
-            'user_id' => auth()->id(),  // O funcionário que criou o pedido
+            'user_id' => auth()->id(),
             'total' => $request->total,
-            'status' => 'Pendente',     // Status inicial do pedido
+            'status' => 'Pendente',
         ]);
 
-        // Adiciona produtos ao pedido
         foreach ($request->produtos as $produtoId => $produtoData) {
             if ($produtoData['quantidade'] > 0) {
                 $produto = Produto::find($produtoId);
@@ -115,7 +155,7 @@ class PedidoController extends Controller
                         'produto_id' => $produto->id,
                         'quantidade' => $produtoData['quantidade'],
                         'preco_unitario' => $produto->preco,
-                        'metodo_pagamento' => $request->metodo_pagamento  // Corrigido
+                        'metodo_pagamento' => $request->metodo_pagamento
                     ]);
                 }
             }
@@ -126,10 +166,8 @@ class PedidoController extends Controller
 
     public function create()
     {
-        // Listar todos os produtos para serem exibidos no formulário de criação de pedido
         $produtos = Produto::all();
 
-        // Renderiza a página de criação de pedido manual
         return view('pedidos.create', compact('produtos'));
     }
 }

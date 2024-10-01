@@ -19,7 +19,7 @@
         </div>
         <div class="form-group mb-4">
             <label for="valor" class="form-label">Valor:</label>
-            <input type="number" class="form-control" name="valor" maxlength="20" placeholder="Digite o valor da estoque:" required>
+            <input type="number" class="form-control" name="valor" maxlength="10" placeholder="Digite o valor da estoque:" required>
         </div>
         <div class="d-flex">
             <button type="submit" class="btn me-2" style="background-color: #35221B; color: #f1f1f1">Adicionar</button>

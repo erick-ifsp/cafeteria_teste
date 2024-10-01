@@ -14,9 +14,6 @@ class Produto extends Model
         'tipos',
         'descricao',
         'produto_arquivo',
-        'produto_arquivo2',
-        'produto_arquivo3',
-        'produto_arquivo4'
     ];
 
     use HasFactory;
@@ -33,5 +30,10 @@ class Produto extends Model
     public function pedidoProdutos()
     {
         return $this->hasMany(PedidoProduto::class, 'produto_id');
+    }
+
+    public function variacoes()
+    {
+        return $this->hasMany(Variacao::class);
     }
 }

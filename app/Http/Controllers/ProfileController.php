@@ -13,7 +13,6 @@ class ProfileController extends Controller
     public function show()
     {
         $user = auth()->user();
-        // Carregando os endereços e cartões existentes do usuário
         $enderecos = Endereco::where('user_id', $user->id)->get();
         $cartoes = Cartao::where('user_id', $user->id)->get();
 
@@ -55,10 +54,14 @@ class ProfileController extends Controller
     {
         $request->validate([
             'cpf' => 'required|string|max:14',
-            'rua' => 'required|string|max:255',
-            'cidade' => 'required|string|max:255',
-            'estado' => 'required|string|max:255',
-            'cep' => 'required|string|max:10',
+            'rua' => 'required|string|max:100',
+            'cidade' => 'required|string|max:50',
+            'estado' => 'required|string|max:50',
+            'cep' => [
+                'required',
+                'string',
+                'regex:/^124(60|6[1-9]|7[0-9]|8[0-9]|89)-\d{3}$/',
+            ],
         ]);
 
         Endereco::create([
@@ -93,7 +96,6 @@ class ProfileController extends Controller
         return redirect()->route('profile.show')->with('success', 'Cartão cadastrado com sucesso!');
     }
 
-    // Método para exibir o formulário de edição de endereço
     public function editEndereco($id)
     {
         $endereco = Endereco::findOrFail($id);
@@ -101,7 +103,6 @@ class ProfileController extends Controller
         return view('profile.endereco.edit', compact('endereco'));
     }
 
-    // Método para exibir o formulário de edição de cartão
     public function editCartao($id)
     {
         $cartao = Cartao::findOrFail($id);
@@ -112,10 +113,15 @@ class ProfileController extends Controller
     public function updateEndereco(Request $request, $id = null)
     {
         $data = $request->validate([
-            'rua' => 'required|string',
-            'cidade' => 'required|string',
-            'estado' => 'required|string',
-            'cep' => 'required|string'
+            'cpf' => 'required|string|max:14',
+            'rua' => 'required|string|max:100',
+            'cidade' => 'required|string|max:50',
+            'estado' => 'required|string|max:50',
+            'cep' => [
+                'required',
+                'string',
+                'regex:/^124(60|6[1-9]|7[0-9]|8[0-9]|89)-\d{3}$/',
+            ],
         ]);
 
         if ($id) {

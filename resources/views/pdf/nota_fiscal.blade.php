@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Nota Fiscal Eletrônica</title>
+    <title>Recibo</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -47,9 +47,7 @@
             width: 100%;
             border-collapse: collapse;
             margin: 0 auto;
-            /* Centraliza a tabela */
             max-width: 100%;
-            /* Garante que a tabela não ultrapasse a largura do container */
         }
 
         .details-table td,
@@ -95,7 +93,7 @@
 <body>
     <div class="container">
         <div class="header">
-            Nota Fiscal Eletrônica
+            Recibo
         </div>
 
         <div class="sub-header">
@@ -103,7 +101,6 @@
             <p>Pedido nº {{ $pedido->id }}</p>
         </div>
 
-        <!-- Tabela de informações da empresa e logo -->
         <div class="company-info">
             <table class="company-info-table">
                 <tr>
@@ -122,7 +119,6 @@
             </table>
         </div>
 
-        <!-- Seção do Destinatário/Remetente -->
         <div class="details">
             <table class="details-table">
                 <tr>

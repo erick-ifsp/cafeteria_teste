@@ -59,6 +59,7 @@
             <h5 class="mb-3">{{ $financeiros ? count($financeiros) : 0 }}
                 {{ $financeiros && count($financeiros) == 1 ? 'Encontrado' : 'Encontrados' }}
             </h5>
+
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -85,6 +86,16 @@
             <div class="mt-4">
                 <h5>Total: R$ {{ number_format($total, 2, ',', '.') }}</h5>
             </div>
+
+            <div class="mt-5">
+                <h5>Gráfico de Lucros, Despesas e Estoque</h5>
+                <canvas id="financeiroChart"></canvas>
+
+                <h5 class="mt-5">Lucro por produto vendido</h5>
+                <div style="max-width: 50%; margin: auto;">
+                    <canvas id="vendasChart"></canvas>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -94,4 +105,131 @@
         max-width: 1425px;
     }
 </style>
+
+<script>
+    function acumularValores(valores) {
+        let acumulado = 0;
+        return valores.map(valor => {
+            acumulado += parseFloat(valor);
+            return acumulado;
+        });
+    }
+
+    var ctx = document.getElementById('financeiroChart').getContext('2d');
+
+    var vendas = @json($financeiros->where('tipo', 'Venda')->pluck('valor')->toArray());
+    var despesas = @json($financeiros->where('tipo', 'Despesa')->pluck('valor')->toArray());
+    var estoque = @json($financeiros->where('tipo', 'Estoque')->pluck('valor')->toArray());
+
+    var groupedVendas = @json($financeiros->where('tipo', 'Venda')->groupBy('updated_at')->map(function ($group) {
+    return $group->sum('valor');
+})->toArray());
+
+    var groupedDespesas = @json($financeiros->where('tipo', 'Despesa')->groupBy('updated_at')->map(function ($group) {
+    return $group->sum('valor');
+})->toArray());
+
+    var groupedEstoque = @json($financeiros->where('tipo', 'Estoque')->groupBy('updated_at')->map(function ($group) {
+    return $group->sum('valor');
+})->toArray());
+
+    var datas = Object.keys(groupedVendas).concat(Object.keys(groupedDespesas)).concat(Object.keys(groupedEstoque)).sort();
+    var vendasAcumuladas = acumularValores(datas.map(date => groupedVendas[date] || 0));
+    var despesasAcumuladas = acumularValores(datas.map(date => groupedDespesas[date] || 0));
+    var estoqueAcumulados = acumularValores(datas.map(date => groupedEstoque[date] || 0));
+
+    var financeiroChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: datas,
+            datasets: [
+                {
+                    label: 'Vendas',
+                    data: vendasAcumuladas,
+                    borderColor: 'green',
+                    fill: false
+                },
+                {
+                    label: 'Despesas',
+                    data: despesasAcumuladas,
+                    borderColor: 'red',
+                    fill: false
+                },
+                {
+                    label: 'Estoque',
+                    data: estoqueAcumulados,
+                    borderColor: 'blue',
+                    fill: false
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: 'Datas'
+                    }
+                },
+                y: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: 'Valores (R$)'
+                    }
+                }
+            }
+        }
+    });
+
+    var produtosMaisVendidos = @json($financeiros->where('tipo', 'Venda')->groupBy('nome')->map(function ($vendas) {
+    $valorUnitario = $vendas->first()->valor_unitario ?? 1;
+    return $vendas->sum('valor') / $valorUnitario;
+})->toArray());
+
+    var nomesProdutos = Object.keys(produtosMaisVendidos);
+    var quantidadesProdutos = Object.values(produtosMaisVendidos);
+
+    var ctx2 = document.getElementById('vendasChart').getContext('2d');
+    var vendasChart = new Chart(ctx2, {
+        type: 'pie',
+        data: {
+            labels: nomesProdutos,
+            datasets: [{
+                data: quantidadesProdutos,
+                backgroundColor: [
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Produtos Mais Vendidos'
+                }
+            }
+        }
+    });
+</script>
 @endsection

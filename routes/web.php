@@ -120,7 +120,7 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('pedidos')->group(function () {
         Route::get('/', [PedidoController::class, 'index'])->name('pedidos.index');
         Route::get('/pedidos/{id}', [PedidoController::class, 'show'])->name('pedidos.show');
-        Route::put('/pedidos/{id}/status', [PedidoController::class, 'updateStatus'])->name('pedidos.updateStatus')->middleware('can:func');
+        Route::put('/pedidos/{id}/atualizar-status', [PedidoController::class, 'atualizarStatus'])->name('pedidos.status')->middleware('can:func');
         Route::post('/pedidos', [PedidoController::class, 'store'])->name('pedidos.store');
         Route::get('/create', [PedidoController::class, 'create'])->name('pedidos.create')->middleware('can:func');
 
@@ -162,13 +162,23 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/carrinho/{id}', [CarrinhoController::class, 'AtualizarCarrinho'])->name('carrinho.update');
     Route::delete('/carrinho/{carrinhoItemId}', [CarrinhoController::class, 'RemoverCarrinho'])->name('carrinho.remover');
     Route::post('/carrinho', [CarrinhoController::class, 'finalizarCompra'])->name('carrinho.finalizar');
+    Route::get('/carrinho/pagar', [CarrinhoController::class, 'pagar'])->name('carrinho.pagar');
 
-    //FINANCEIRO
+
+    // FINANCEIRO
     Route::get('/financeiro', [FinanceiroController::class, 'index'])->name('financeiro')->middleware('can:admin');
 
-    //PDF 
+    // PDF 
     Route::get('pedidos/{id}/nota-fiscal', [PedidoController::class, 'gerarNotaFiscal'])->name('pedidos.nota-fiscal');
     Route::get('/financeiro/pdf', [FinanceiroController::class, 'generatePdf'])->name('financeiro.pdf');
+
+    // PAGAMENTO
+    Route::prefix('pagamento')->group(function () {
+        Route::get('/', 'App\Http\Controllers\PagamentoController@checkout')->name('pagamento.checkout');
+        Route::post('/cartao', 'App\Http\Controllers\PagamentoController@cartao')->name('pagamento.cartao');;
+        Route::post('/pix', 'App\Http\Controllers\PagamentoController@pix')->name('pagamento.pix');;
+        Route::match(['get', 'post'],'/success', 'App\Http\Controllers\PagamentoController@success')->name('pagamento.success');
+    });
 });
 
 require __DIR__ . '/auth.php';

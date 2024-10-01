@@ -12,6 +12,7 @@ class Carrinho extends Model
         'descricao',
         'tipo',
         'valor',
+        'preco'
     ];
 
     public function user()

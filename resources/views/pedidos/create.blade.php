@@ -42,7 +42,7 @@
                                 max="50" data-preco="{{ $produto->preco }}" />
                         </td>
                         <td>
-                            <button type="button" class="btn btn-sm btn-success add-product" data-id="{{ $produto->id }}"
+                            <button type="button" class="btn btn-sm add-product" style="background-color: #35221B; color: #f1f1f1" data-id="{{ $produto->id }}"
                                 data-name="{{ $produto->nome }}" data-preco="{{ $produto->preco }}">+</button>
                             <button type="button" class="btn btn-sm btn-danger remove-product"
                                 data-id="{{ $produto->id }}">-</button>
@@ -67,14 +67,13 @@
             <input type="text" id="total" name="total" class="form-control" readonly value="R$ 0,00">
         </div>
 
-        <button type="submit" class="btn btn-primary">Criar Pedido</button>
+        <button type="submit" class="btn" style="background-color: #35221B; color: #f1f1f1">Criar Pedido</button>
     </form>
 </div>
 
 <style>
     .quantity-col {
         width: 120px;
-        /* Ajuste a largura conforme necessário */
     }
 </style>
 
@@ -109,7 +108,7 @@
             }
 
             input.value = quantity;
-            input.dispatchEvent(new Event('input')); // Trigger input event to update total
+            input.dispatchEvent(new Event('input'));
         }
 
         function updateTotal() {
@@ -122,9 +121,8 @@
             totalField.value = 'R$ ' + total.toFixed(2).replace('.', ',');
         }
 
-        // Remove formatting before form submission
         document.querySelector('form').addEventListener('submit', function () {
-            totalField.value = total.toFixed(2);  // Set in a valid numeric format (e.g., "10.50")
+            totalField.value = total.toFixed(2);
         });
     });
 </script>

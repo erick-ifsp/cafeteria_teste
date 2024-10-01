@@ -9,9 +9,9 @@ class CreateAccessesTable extends Migration
     public function up()
     {
         Schema::create('accesses', function (Blueprint $table) {
-            $table->id(); // bigint UNSIGNED AUTO_INCREMENT
+            $table->id();
             $table->string('nome', 100);
-            $table->timestamps(); // created_at, updated_at
+            $table->timestamps();
             $table->engine = 'InnoDB';
         });
     }

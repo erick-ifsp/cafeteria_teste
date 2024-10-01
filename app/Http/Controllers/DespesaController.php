@@ -40,6 +40,7 @@ class DespesaController extends Controller
     {
         $data = $request->all();
         $data['user_id'] = Auth::id();
+        $data['gerenciamento_id'] = $data['id'];
         $data['valor'] = -abs($data['valor']);
         $data['tipo'] = 'Despesa';
 

@@ -3,7 +3,6 @@
 @section('title', 'Adicionar Produtos')
 
 @section('content')
-
 <div class="container mt-5">
     <div class="row">
         <div class="col-sm-12">
@@ -13,13 +12,7 @@
                 @csrf
                 <div class="form-group mb-3">
                     <label for="nome" class="form-label">Nome:</label>
-                    <input type="text" class="form-control" maxlength="50" name="nome"
-                        placeholder="Digite o nome do produto" required>
-                </div>
-
-                <div class="form-group mb-3">
-                    <label for="preco" class="form-label">Preço:</label>
-                    <input type="text" class="form-control" name="preco" id="preco" placeholder="00,00" required>
+                    <input type="text" class="form-control" maxlength="50" name="nome" placeholder="Digite o nome do produto" required>
                 </div>
 
                 <div class="form-group mb-3">
@@ -32,133 +25,55 @@
                 </div>
 
                 <div class="form-group mb-3">
-                    <label for="tipos" class="form-label">Tipos:</label>
-                    <div id="tipos-container">
-                        <input type="text" class="form-control mb-2" name="tipos[]" maxlength="50"
-                            placeholder="Digite o tipo do produto">
-                    </div>
-                    <button type="button" class="btn btn-primary mt-2" onclick="addTipo()">Adicionar Tipo</button>
+                    <label for="descricao" class="form-label">Descrição:</label>
+                    <input type="text" class="form-control" maxlength="250" name="descricao"
+                        placeholder="Adicione a descrição do produto" required>
                 </div>
 
                 <div class="form-group mb-3">
-                    <label for="descricao" class="form-label">Descrição:</label>
-                    <input type="text" class="form-control" id="descricao" name="descricao"
-                        placeholder="Adicione a descrição do produto" maxlength="250" required>
-                    <div class="form-text">
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-3 mb-3">
-                            <label for="produto_arquivo" class="form-label">Adicionar foto</label>
-                            <input type="file" name="produto_arquivo" id="produto_arquivo" class="form-control"
-                                onchange="previewImage(1)">
-                            <img id="preview1" class="img-thumbnail mt-2" style="display:none; width: 200px;" />
-                            <button type="button" class="btn btn-danger mt-2" onclick="removeImage(1)"
-                                style="display:none;" id="remove1">Remover</button>
-                        </div>
-
-                        <div class="col-md-3 mb-3" id="imagem2-group" style="display:none;">
-                            <label for="produto_arquivo2" class="form-label">Adicionar foto</label>
-                            <input type="file" name="produto_arquivo2" id="produto_arquivo2" class="form-control"
-                                onchange="previewImage(2)">
-                            <img id="preview2" class="img-thumbnail mt-2" style="display:none; width: 200px;" />
-                            <button type="button" class="btn btn-danger mt-2" onclick="removeImage(2)"
-                                style="display:none;" id="remove2">Remover</button>
-                        </div>
-
-                        <div class="col-md-3 mb-3" id="imagem3-group" style="display:none;">
-                            <label for="produto_arquivo3" class="form-label">Adicionar foto</label>
-                            <input type="file" name="produto_arquivo3" id="produto_arquivo3" class="form-control"
-                                onchange="previewImage(3)">
-                            <img id="preview3" class="img-thumbnail mt-2" style="display:none; width: 200px;" />
-                            <button type="button" class="btn btn-danger mt-2" onclick="removeImage(3)"
-                                style="display:none;" id="remove3">Remover</button>
-                        </div>
-
-                        <div class="col-md-3 mb-3" id="imagem4-group" style="display:none;">
-                            <label for="produto_arquivo4" class="form-label">Adicionar foto</label>
-                            <input type="file" name="produto_arquivo4" id="produto_arquivo4" class="form-control"
-                                onchange="previewImage(4)">
-                            <img id="preview4" class="img-thumbnail mt-2" style="display:none; width: 200px;" />
-                            <button type="button" class="btn btn-danger mt-2" onclick="removeImage(4)"
-                                style="display:none;" id="remove4">Remover</button>
+                    <label for="tipos" class="form-label">Variações:</label>
+                    <div id="tipos-container">
+                        <div class="row mb-2">
+                            <div class="col">
+                                <input type="text" class="form-control" maxlength="50" name="tipos[0][nome]"
+                                    placeholder="Tipo" required>
+                            </div>
+                            <div class="col">
+                                <input type="number" step="0.01" maxlength="10" class="form-control" name="tipos[0][preco]"
+                                    placeholder="Preço" required>
+                            </div>
                         </div>
                     </div>
+                    <button type="button" class="btn mt-2" style="background-color: #35221B; color: #f1f1f1" onclick="addTipo()">Adicionar Variação</button>
+                </div>
 
-                    <div class="form-group">
-                        <button type="submit" class="btn"
-                            style="background-color: #35221B; color: #f1f1f1">Adicionar</button>
-                        <a href="{{ route('produtos') }}" class="btn"
-                            style="background-color: #35221B; color: #f1f1f1">Cancelar</a>
-                    </div>
+                <div class="form-group mb-3">
+                    <label for="produto_arquivo" class="form-label">Adicionar foto principal</label>
+                    <input type="file" name="produto_arquivo" id="produto_arquivo" class="form-control" required>
+                </div>
+
+                <button type="submit" class="btn" style="background-color: #35221B; color: #f1f1f1">Criar Produto</button>
             </form>
         </div>
     </div>
 </div>
 
 <script>
-    function previewImage(index) {
-        var fileInput = document.getElementById('produto_arquivo' + (index === 1 ? '' : index));
-        var preview = document.getElementById('preview' + index);
-        var removeButton = document.getElementById('remove' + index);
-        var nextGroup = document.getElementById('imagem' + (index + 1) + '-group');
-
-        if (fileInput.files && fileInput.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                preview.src = e.target.result;
-                preview.style.display = 'block';
-                removeButton.style.display = 'inline-block';
-            }
-            reader.readAsDataURL(fileInput.files[0]);
-
-            if (nextGroup) {
-                nextGroup.style.display = 'block';
-            }
-        }
-    }
-
-    function removeImage(index) {
-        var fileInput = document.getElementById('produto_arquivo' + (index === 1 ? '' : index));
-        var preview = document.getElementById('preview' + index);
-        var removeButton = document.getElementById('remove' + index);
-
-        fileInput.value = '';
-        preview.style.display = 'none';
-        removeButton.style.display = 'none';
-
-        var nextGroup = document.getElementById('imagem' + (index + 1) + '-group');
-        if (nextGroup) {
-            var nextFileInput = document.getElementById('produto_arquivo' + (index + 1));
-            if (!nextFileInput.files || !nextFileInput.files[0]) {
-                nextGroup.style.display = 'none';
-            }
-        }
-    }
-
-    document.querySelectorAll('input[type="file"]').forEach(input => {
-        input.addEventListener('change', (e) => {
-            if (e.target.files.length > 1) {
-                alert('Você só pode adicionar uma foto por vez.');
-                e.target.value = '';
-            }
-        });
-    });
+    let tipoIndex = 1;
 
     function addTipo() {
-        var container = document.getElementById('tipos-container');
-        var input = document.createElement('input');
-        input.type = 'text';
-        input.className = 'form-control mb-2';
-        input.name = 'tipos[]';
-        input.placeholder = 'Digite o tipo do produto';
-        container.appendChild(input);
-    }
-
-    function removerTipo(button) {
-        const tipoDiv = button.parentElement;
-        tipoDiv.remove();
+        const container = document.getElementById('tipos-container');
+        const row = document.createElement('div');
+        row.className = 'row mb-2';
+        row.innerHTML = `
+            <div class="col">
+                <input type="text" class="form-control" name="tipos[${tipoIndex}][nome]" placeholder="Tipo (e.g., Grande)" required>
+            </div>
+            <div class="col">
+                <input type="number" step="0.01" class="form-control" name="tipos[${tipoIndex}][preco]" placeholder="Preço (e.g., 6.00)" required>
+            </div>`;
+        container.appendChild(row);
+        tipoIndex++;
     }
 </script>
-
 @endsection
